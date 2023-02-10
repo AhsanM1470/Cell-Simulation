@@ -154,10 +154,13 @@ public class Field {
 
         for (Location loc : adjLocations) {
           Cell cell = field[loc.getRow()][loc.getCol()];
-          if (cell.isAlive())
-            neighbours.add(cell);
+          //if (cell != null){
+              if(cell.isAlive()){
+                  neighbours.add(cell);  
+              //}  
+          }
         }
-        Collections.shuffle(neighbours, rand);
+        //Collections.shuffle(neighbours, rand);
       }
       return neighbours;
     }

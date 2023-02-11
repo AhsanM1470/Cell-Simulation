@@ -121,7 +121,7 @@ public class Simulator {
         generation = 0;
         cells.clear();
         field.clear();
-        populate();
+        mycoPopulate();
 
         // Show the starting state in the view.
         view.showStatus(generation, field);
@@ -130,19 +130,22 @@ public class Simulator {
     /**
      * Randomly populate the field live/dead life forms
      */
-    private void populate() {
-      Random rand = Randomizer.getRandom();
+    private void mycoPopulate() {
+      Random mycoRand = Randomizer.getRandom();
+      Random whiteRand = Randomizer.getRandom();
       
       for (int row = 0; row < field.getDepth(); row++) {
         for (int col = 0; col < field.getWidth(); col++) {
           Location location = new Location(row, col);
           Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
-          if (rand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
+          if (mycoRand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
             cells.add(myco);
           }
           else {
             myco.setDead();
             cells.add(myco);
+            // white.setDead();
+            // cells.add(white);
           }
         }
       }

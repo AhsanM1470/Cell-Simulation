@@ -29,6 +29,7 @@ public class Simulator {
     private List<Cell> cells;
     
     private List<Cell> temporaryCells;
+    private List<Location> temporaryLocations;
 
     // The current state of the field.
     private Field field;
@@ -70,6 +71,7 @@ public class Simulator {
         cells = new ArrayList<>();
         temporaryCells = new ArrayList<>();
         field = new Field(depth, width);
+        temporaryLocations = new ArrayList<>();
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
@@ -118,11 +120,14 @@ public class Simulator {
         while(it.hasNext()){
             Cell t = it.next();
             if (!t.isAlive()){
+                temporaryLocations.add(t.getLocation());
                 it.remove();
             }
         }
         
         for(Cell temporaryCell : temporaryCells){
+            temporaryCell.setLocation(temporaryLocations.get(0));
+            temporaryLocations.remove(0);
             cells.add(temporaryCell);
         }
         

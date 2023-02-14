@@ -23,6 +23,11 @@ public class Mycoplasma extends Cell {
     public Mycoplasma(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
     }
+    
+    public Mycoplasma(Simulator simulator, Field field, Color col)
+    {
+        super(simulator, field, col);
+    }
 
     /**
      * This is how the Mycoplasma decides if it's alive or not
@@ -35,7 +40,7 @@ public class Mycoplasma extends Cell {
             if(mycoCount == 2 || mycoCount == 3) {
                setNextState(true);
             } else {
-                EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), getLocation(), Color.GRAY);
+                EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
                 getSimulator().addTemporaryCell(newEmpty);
                 //setNewCell(newEmpty);
             }

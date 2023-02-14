@@ -21,6 +21,11 @@ public class EmptyCell extends Cell
         super(simulator, field, location, col);
     }
     
+    public EmptyCell(Simulator simulator, Field field, Color col)
+    {
+        super(simulator, field, col);
+    }
+    
     public void act()
     {
         int mycoCount = getMycoCount();
@@ -28,7 +33,7 @@ public class EmptyCell extends Cell
         if(isAlive() && mycoCount == 3){
             //setNextState(false);
             setNextState(false);
-            Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), getLocation(), Color.ORANGE);
+            Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
             getSimulator().addTemporaryCell(newMyco);
             //setNewCell(newMyco);
             //getField().place(newMyco, getLocation());

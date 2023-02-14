@@ -51,6 +51,15 @@ public abstract class Cell {
         // neighbours = new ArrayList<>();
         // neighbours = getField().getLivingNeighbours(getLocation());
     }
+    
+    public Cell(Simulator simulator, Field field, Color col)
+    {
+        alive = true;
+        nextAlive = false;
+        this.simulator = simulator;
+        this.field = field;
+        setColor(col);
+    }
 
     /**
      * Make this cell act - that is: the cell decides it's status in the

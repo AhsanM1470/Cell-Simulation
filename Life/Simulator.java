@@ -30,6 +30,14 @@ public class Simulator {
     
     private List<Cell> temporaryCells;
 
+
+
+
+
+
+
+    private List<Cell> temporaryDeadCells;
+
     // The current state of the field.
     private Field field;
 
@@ -44,7 +52,7 @@ public class Simulator {
      */
     public static void main(String[] args) {
       Simulator sim = new Simulator();
-      sim.simulate(100);
+      sim.simulate(1);
     }
 
     /**
@@ -69,6 +77,7 @@ public class Simulator {
 
         cells = new ArrayList<>();
         temporaryCells = new ArrayList<>();
+        temporaryDeadCells = new ArrayList<>();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
@@ -95,7 +104,7 @@ public class Simulator {
     public void simulate(int numGenerations) {
         for (int gen = 1; gen <= numGenerations && view.isViable(field); gen++) {
             simOneGeneration();
-            delay(10);   // comment out to run simulation faster
+            delay(1000);   // comment out to run simulation faster
         }
     }
 
@@ -113,15 +122,21 @@ public class Simulator {
         for (Cell cell : cells) {
           cell.updateState();
         }
-        
+
+        //removes dead cells from the list Cells
         Iterator<Cell> it = cells.iterator();
         while(it.hasNext()){
-            Cell t = it.next();
-            if (!t.isAlive()){
+            Cell cell = it.next();
+            if (!cell.isAlive()){
                 it.remove();
             }
         }
-        
+
+        for (Cell cell : temporaryDeadCells){
+            EmptyCell newEmpty = new EmptyCell(this, cell.getField(), cell.getLocation(), Color.GRAY);
+            addTemporaryCell(newEmpty);
+        }
+
         for(Cell temporaryCell : temporaryCells){
             cells.add(temporaryCell);
         }
@@ -133,6 +148,7 @@ public class Simulator {
         
         view.showStatus(generation, field);
         temporaryCells.clear();
+        temporaryDeadCells.clear();
     }
 
     /**
@@ -173,6 +189,10 @@ public class Simulator {
     
     public void addTemporaryCell(Cell cell){
         temporaryCells.add(cell);
+    }
+
+    public void addTemporaryDeadCell(Cell cell){
+        temporaryDeadCells.add(cell);
     }
 
     /**

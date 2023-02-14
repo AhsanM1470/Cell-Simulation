@@ -34,11 +34,20 @@ public class Mycoplasma extends Cell {
         if(isAlive()){
             if(mycoCount == 2 || mycoCount == 3) {
                setNextState(true);
-            } else {
-                EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), getLocation(), Color.GRAY);
-                getSimulator().addTemporaryCell(newEmpty);
+            }
+            else {
+                //stays dead for next generation
+//                getSimulator().addTemporaryDeadCell(this);
+                  getSimulator().addTemporaryDeadCell(this);
+//                EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), getLocation(), Color.GRAY);
+//                getSimulator().addTemporaryCell(newEmpty);
                 //setNewCell(newEmpty);
             }
+
         }
+        else{
+            getSimulator().addTemporaryDeadCell(this);
+        }
+
     }
 }

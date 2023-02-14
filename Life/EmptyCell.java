@@ -25,9 +25,7 @@ public class EmptyCell extends Cell
     {
         int mycoCount = getMycoCount();
         setNextState(true);
-        if(isAlive() && mycoCount == 3){
-            //setNextState(false);
-            setNextState(false);
+        if(mycoCount == 3){
             Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), getLocation(), Color.ORANGE);
             getSimulator().addTemporaryCell(newMyco);
             //setNewCell(newMyco);

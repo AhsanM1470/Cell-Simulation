@@ -154,13 +154,23 @@ public class Field {
 
         for (Location loc : adjLocations) {
           Cell cell = field[loc.getRow()][loc.getCol()];
-          if (cell.isAlive())
-            neighbours.add(cell);
+          //if (cell != null){
+              if(cell.isAlive()){
+                  neighbours.add(cell);  
+              //}  
+          }
         }
-        Collections.shuffle(neighbours, rand);
+        //Collections.shuffle(neighbours, rand);
       }
       return neighbours;
     }
+    
+    // public List<Cell> getLivingMycoNeighbours(Location location){
+        // assert location != null : "Null location passed to adjacentLocations";
+        // List<Cell> neighbours = new LinkedList<>();
+        
+        // return neighbours;
+    // }
 
     /**
      * Return the depth of the field.

@@ -28,7 +28,11 @@ public abstract class Cell {
     // The cell's color
     private Color color = Color.white;
     
-    //private List<Cell> neighbours;
+    //**private List<Cell> neighbours;
+    
+    //private Cell newCell;
+    
+    private Simulator simulator;
 
     /**
      * Create a new cell at location in field.
@@ -36,9 +40,10 @@ public abstract class Cell {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Cell(Field field, Location location, Color col) {
+    public Cell(Simulator simulator, Field field, Location location, Color col) {
         alive = true;
         nextAlive = false;
+        this.simulator = simulator;
         this.field = field;
         setLocation(location);
         setColor(col);
@@ -148,5 +153,27 @@ public abstract class Cell {
         return neighbours;
     }
     
+    protected int getMycoCount(){
+        int mycoCount = 0;
+        List<Cell> neighbours = getNeighbours();
+        for(Cell neighbour : neighbours){
+            if(neighbour instanceof Mycoplasma){
+                mycoCount++;
+            }
+        }
+        return mycoCount;
+    }
     
+    protected Simulator getSimulator(){
+        return simulator;
+    }
+    
+    // protected Cell getNewCell()
+    // {
+        // return newCell;
+    // }
+    
+    // protected void setNewCell(Cell cell){
+        // newCell = cell;
+    // }
 }

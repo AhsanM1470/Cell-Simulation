@@ -20,24 +20,25 @@ public class Mycoplasma extends Cell {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Mycoplasma(Field field, Location location, Color col) {
-        super(field, location, col);
+    public Mycoplasma(Simulator simulator, Field field, Location location, Color col) {
+        super(simulator, field, location, col);
     }
 
     /**
      * This is how the Mycoplasma decides if it's alive or not
      */
-     public void act() {
-       //List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
-       List<Cell> neighbours = getNeighbours();
-       setNextState(false);
-
-       if (isAlive()) {
-         if (neighbours.size() == 2 || neighbours.size() == 3) {
-           setNextState(true);
-         }
-       } else if (neighbours.size() == 3) {
-           setNextState(true);
-       }
-     }
+    public void act() {
+        //List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
+        int mycoCount = getMycoCount();
+        setNextState(false);
+        if(isAlive()){
+            if(mycoCount == 2 || mycoCount == 3) {
+               setNextState(true);
+            } else {
+                EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), getLocation(), Color.GRAY);
+                getSimulator().addTemporaryCell(newEmpty);
+                //setNewCell(newEmpty);
+            }
+        }
+    }
 }

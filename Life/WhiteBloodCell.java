@@ -15,28 +15,13 @@ public class WhiteBloodCell extends Cell
     /**
      * Constructor for objects of class WhiteBloodCell
      */
-    public WhiteBloodCell(Field field, Location location, Color col) {
-        super(field, location, col);
+    public WhiteBloodCell(Simulator simulator, Field field, Location location, Color col) {
+        super(simulator, field, location, col);
     }
 
     /**
      */
     public void act()
     {
-        List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
-        incrementAge();
-        setNextState(false);
-        
-        if(isAlive()){
-            int bacteriaCount = 0;
-            for(Cell cell : neighbours){
-                if(cell instanceof Mycoplasma){
-                    bacteriaCount++;
-                }
-            }
-            if(bacteriaCount < 3){
-                setNextState(true);
-            }
-        }
     }
 }

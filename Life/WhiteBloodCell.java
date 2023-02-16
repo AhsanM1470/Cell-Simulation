@@ -32,7 +32,7 @@ public class WhiteBloodCell extends Cell
     }
 
     /**
-     * How it is decided if white blood cells live or not
+     * How it is decided if white blood cells live/spread or not
      */
     public void act()
     {
@@ -42,7 +42,7 @@ public class WhiteBloodCell extends Cell
             //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
             if(mycoCount >= 3){
                 setNextState(false);
-                Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.GRAY);
+                Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
                 getSimulator().addTemporaryCell(newMyco);
             }
         }

@@ -9,5 +9,5 @@ comment2.target=WhiteBloodCell(Simulator,\ Field,\ java.awt.Color)
 comment2.text=\r\n\ Create\ a\ new\ WhiteBloodCell\ without\ a\ location\ on\ the\ field\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n
 comment3.params=
 comment3.target=void\ act()
-comment3.text=\r\n\ How\ it\ is\ decided\ if\ white\ blood\ cells\ live\ or\ not\r\n
+comment3.text=\r\n\ How\ it\ is\ decided\ if\ white\ blood\ cells\ live/spread\ or\ not\r\n
 numComments=4

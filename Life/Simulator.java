@@ -19,12 +19,6 @@ public class Simulator {
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
 
-    // The probability that a Mycoplasma is alive
-    //private static final double MYCOPLASMA_ALIVE_PROB = 0.1;
-    
-    // The probability that a white blood cell is alive
-    //private static final double WHITE_BLOOD_CELL_ALIVE_PROB = 0.2;
-
     // List of cells in the field.
     private List<Cell> cells;
 
@@ -116,8 +110,11 @@ public class Simulator {
         }
 
         for (Cell cell : cells) {
-          cell.updateState();
-          cell.incrementAge();
+            cell.updateState();
+            cell.incrementAge();
+            if(cell instanceof WhiteBloodCell && cell.getAge() > 5){
+                cell.setColor(Color.WHITE);
+            }
         }
         
         //Remove all dead cells and replace them with the newly generated cells in temporaryCells

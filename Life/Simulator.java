@@ -20,15 +20,18 @@ public class Simulator {
     private static final int DEFAULT_DEPTH = 80;
 
     // The probability that a Mycoplasma is alive
-    private static final double MYCOPLASMA_ALIVE_PROB = 0.1;
+    //private static final double MYCOPLASMA_ALIVE_PROB = 0.1;
     
     // The probability that a white blood cell is alive
-    private static final double WHITE_BLOOD_CELL_ALIVE_PROB = 0.2;
+    //private static final double WHITE_BLOOD_CELL_ALIVE_PROB = 0.2;
 
     // List of cells in the field.
     private List<Cell> cells;
-    
+
+    //Newly generated cells that will be added to the cells ArrayList
     private List<Cell> temporaryCells;
+    
+    //The locations on the field for the temporary cells
     private List<Location> temporaryLocations;
 
     // The current state of the field.
@@ -114,8 +117,10 @@ public class Simulator {
 
         for (Cell cell : cells) {
           cell.updateState();
+          cell.incrementAge();
         }
         
+        //Remove all dead cells and replace them with the newly generated cells in temporaryCells
         Iterator<Cell> it = cells.iterator();
         while(it.hasNext()){
             Cell t = it.next();
@@ -125,16 +130,12 @@ public class Simulator {
             }
         }
         
+        //Place the temporary cells on the field
         for(Cell temporaryCell : temporaryCells){
             temporaryCell.setLocation(temporaryLocations.get(0));
             temporaryLocations.remove(0);
             cells.add(temporaryCell);
         }
-        
-        //**delete the other cells
-        //either use iterator to remove the element from cells list
-        //I think that's the best option for now
-        //Wait...remove a cell if it is dead? In the iterator?
         
         view.showStatus(generation, field);
         temporaryCells.clear();
@@ -157,25 +158,29 @@ public class Simulator {
      * Randomly populate the field live/dead life forms
      */
     private void populate() {
-      Random rand = Randomizer.getRandom();
+        Random rand = Randomizer.getRandom();
       
-      for (int row = 0; row < field.getDepth(); row++) {
-        for (int col = 0; col < field.getWidth(); col++) {
-          Location location = new Location(row, col);
-          Mycoplasma myco = new Mycoplasma(this, field, location, Color.ORANGE);
-          if (rand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
-            cells.add(myco);
-          }
-          else{
-            EmptyCell empty = new EmptyCell(this, field, location, Color.GRAY);
-            cells.add(empty);
-            //myco.setDead();
-            //cells.add(myco);
-          }
+        for (int row = 0; row < field.getDepth(); row++) {
+            for (int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
+                double randResult = rand.nextDouble();
+                if (randResult <= 0.2) {
+                    Mycoplasma myco = new Mycoplasma(this, field, location, Color.ORANGE);
+                    cells.add(myco);
+                }else if(randResult > 0.2 && randResult <= 0.22){
+                    WhiteBloodCell white = new WhiteBloodCell(this, field, location, Color.PINK);
+                    cells.add(white);
+                } else{
+                    EmptyCell empty = new EmptyCell(this, field, location, Color.GRAY);
+                    cells.add(empty);
+                }
+            }
         }
-      }
     }
     
+    /**
+     * Add a cell to the temporaryCells ArrayList
+     */
     public void addTemporaryCell(Cell cell){
         temporaryCells.add(cell);
     }

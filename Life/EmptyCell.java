@@ -4,39 +4,57 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- * Write a description of class EmptyCell here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Used when there is no specialised cell at the location on the field.
+ * Specialised cells: Mycoplasma, white blood cell, cancer cell
  */
 public class EmptyCell extends Cell
 {
-    // instance variables - replace the example below with your own
-    
     /**
-     * Constructor for objects of class EmptyCell
+     * Create a new EmptyCell.
+     *
+     * @param simulator The simulator used
+     * @param field The field currently occupied.
+     * @param location The location within the field.
      */
     public EmptyCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
     }
     
+    /**
+     * Create a new EmptyCell without a location on the field.
+     *
+     * @param simulator The simulator used
+     * @param field The field currently occupied.
+     */
     public EmptyCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
     }
     
+    /**
+     * How it is decided if the empty cell continues to exist or be replaced by a specialised cell
+     */
     public void act()
     {
         int mycoCount = getMycoCount();
+        int whiteCount = getWhiteCount();
         setNextState(true);
-        if(isAlive() && mycoCount == 3){
-            //setNextState(false);
-            setNextState(false);
-            Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
-            getSimulator().addTemporaryCell(newMyco);
-            //setNewCell(newMyco);
-            //getField().place(newMyco, getLocation());
+        if(isAlive()){
+            //If there is 3 mycoplasma around it, it will be replaced by a mycoplasma.
+            if(mycoCount == 3){
+                setNextState(false);
+                Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
+                getSimulator().addTemporaryCell(newMyco);
+                return;
+            }
+            //Otherwise if there are at least 2 white blood cells around it, it will be replaced by a white blood cell.
+            if(whiteCount > 2){
+                setNextState(false);
+                WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
+                getSimulator().addTemporaryCell(newWhite);
+                return;
+            }
         }
     }
 

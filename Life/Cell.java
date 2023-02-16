@@ -17,7 +17,7 @@ public abstract class Cell {
     private boolean nextAlive;
     
     // How many generations the cell has lived for
-    private int age;
+    private int age = 0;
 
     // The cell's field.
     private Field field;
@@ -30,13 +30,13 @@ public abstract class Cell {
     
     //**private List<Cell> neighbours;
     
-    //private Cell newCell;
-    
+    //The cell's simulator
     private Simulator simulator;
 
     /**
      * Create a new cell at location in field.
      *
+     * @param simulator The simulator used
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -52,6 +52,13 @@ public abstract class Cell {
         // neighbours = getField().getLivingNeighbours(getLocation());
     }
     
+    /**
+     * Cell constructor but no location is given, so the cell is
+     * not placed on the field.
+     * 
+     * @param simulator The simulator used
+     * @param field The field currently occupied.
+     */
     public Cell(Simulator simulator, Field field, Color col)
     {
         alive = true;
@@ -155,13 +162,18 @@ public abstract class Cell {
     }
     
     /**
-     * 
+     * Return all alive cells around the cell
+     * @return List of the cells
      */
     protected List<Cell> getNeighbours(){
         List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
         return neighbours;
     }
     
+    /**
+     * Return the number of mycoplasma neighbours around the cell
+     * @return The number of mycoplasma neighbours
+     */
     protected int getMycoCount(){
         int mycoCount = 0;
         List<Cell> neighbours = getNeighbours();
@@ -173,16 +185,42 @@ public abstract class Cell {
         return mycoCount;
     }
     
+    /**
+     * Return the number of white blood cells neighbours around the cell
+     * @return The number of white blood cells neighbours
+     */
+    protected int getWhiteCount(){
+        int whiteCount = 0;
+        List<Cell> neighbours = getNeighbours();
+        for(Cell neighbour : neighbours){
+            if(neighbour instanceof WhiteBloodCell){
+                whiteCount++;
+            }
+        }
+        return whiteCount;
+    }
+    
+    /**
+     * Check if the white blood cell is "mature".
+     * Only mature white blood cells can attack other cells.
+     * @return True if the white blood cell is equal to or older than 5 (generations)
+     */
+    protected boolean matureWhiteNearby(){
+        List<Cell> neighbours = getNeighbours();
+        for(Cell neighbour : neighbours){
+            //what if I just did age? probably no works
+            if(neighbour instanceof WhiteBloodCell && neighbour.getAge() >= 5){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Return the cell's simulator
+     * @param Return the cell's simulator
+     */
     protected Simulator getSimulator(){
         return simulator;
     }
-    
-    // protected Cell getNewCell()
-    // {
-        // return newCell;
-    // }
-    
-    // protected void setNewCell(Cell cell){
-        // newCell = cell;
-    // }
 }

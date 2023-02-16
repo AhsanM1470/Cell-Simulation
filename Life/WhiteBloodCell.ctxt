@@ -1,10 +1,13 @@
 #BlueJ class context
 comment0.target=WhiteBloodCell
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ WhiteBloodCell\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ Attacks\ mycoplasma\ and\ cancer\ cells\r\n
 comment1.params=simulator\ field\ location\ col
 comment1.target=WhiteBloodCell(Simulator,\ Field,\ Location,\ java.awt.Color)
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ WhiteBloodCell\r\n
-comment2.params=
-comment2.target=void\ act()
-comment2.text=\r\n
-numComments=3
+comment1.text=\r\n\ Create\ a\ new\ WhiteBloodVell.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment2.params=simulator\ field\ col
+comment2.target=WhiteBloodCell(Simulator,\ Field,\ java.awt.Color)
+comment2.text=\r\n\ Create\ a\ new\ WhiteBloodCell\ without\ a\ location\ on\ the\ field\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ How\ it\ is\ decided\ if\ white\ blood\ cells\ live\ or\ not\r\n
+numComments=4

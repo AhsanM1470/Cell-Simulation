@@ -3,13 +3,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Simplest form of life.
- * Fun Fact: Mycoplasma are one of the simplest forms of life.  A type of
- * bacteria, they only have 500-1000 genes! For comparison, fruit flies have
- * about 14,000 genes.
+ * A type of bacteria
  *
  * @author David J. Barnes, Michael Kölling & Jeffery Raphael
- * @version 2022.01.06 (1)
+ * @version 
  */
 
 public class Mycoplasma extends Cell {
@@ -17,6 +14,7 @@ public class Mycoplasma extends Cell {
     /**
      * Create a new Mycoplasma.
      *
+     * @param simulator The simulator used
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -24,6 +22,12 @@ public class Mycoplasma extends Cell {
         super(simulator, field, location, col);
     }
     
+    /**
+     * Create a new Mycoplasma without a location on the field.
+     *
+     * @param simulator The simulator used
+     * @param field The field currently occupied.
+     */
     public Mycoplasma(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
@@ -33,16 +37,33 @@ public class Mycoplasma extends Cell {
      * This is how the Mycoplasma decides if it's alive or not
      */
     public void act() {
-        //List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
         int mycoCount = getMycoCount();
+        //int whiteCount = getWhiteCount();
         setNextState(false);
         if(isAlive()){
+            //If there are exactly 2 or 3 mycoplasma they will continue to live
+            //Otherwise they are killed and replaced by an empty cell
             if(mycoCount == 2 || mycoCount == 3) {
                setNextState(true);
-            } else {
+               return;
+            }else if(mycoCount < 2 || mycoCount > 3){
                 EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
                 getSimulator().addTemporaryCell(newEmpty);
                 //setNewCell(newEmpty);
+                return;
+            }
+            //If there is at least 1 mature white blood cell around them, they are killed.
+            //80% of the time they are replaced by an empty cell. 20% of the time with another white blood cell.
+            if(matureWhiteNearby()){
+                Random rand = new Random();
+                double randResult = rand.nextDouble();
+                if(randResult <= 0.8){
+                    EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+                    getSimulator().addTemporaryCell(newEmpty);
+                }else{
+                    WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
+                    getSimulator().addTemporaryCell(newWhite);
+                }
             }
         }
     }

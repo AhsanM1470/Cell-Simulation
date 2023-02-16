@@ -40,7 +40,9 @@ public class EmptyCell extends Cell
         int mycoCount = getMycoCount();
         int whiteCount = getWhiteCount();
         setNextState(true);
-        if(isAlive()){
+            
+        
+        
             //If there is 3 mycoplasma around it, it will be replaced by a mycoplasma.
             if(mycoCount == 3){
                 setNextState(false);
@@ -55,7 +57,16 @@ public class EmptyCell extends Cell
                 getSimulator().addTemporaryCell(newWhite);
                 return;
             }
-        }
+            
+            if (getCancerCount() > 0){
+                setNextState(false);
+                CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);
+                getSimulator().addTemporaryCell(newCancer);
+                return;
+            }
+        
+            
+            
     }
 
 }

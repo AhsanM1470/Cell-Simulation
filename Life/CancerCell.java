@@ -37,12 +37,22 @@ public class CancerCell extends Cell
      */
     public void act()
     {
-        int mycoCount = getMycoCount();
-        int whiteCount = getWhiteCount();
-        setNextState(true);
-        if(isAlive()){
-            
-        }
+    int mycoCount = getMycoCount();
+    int whiteCount = getWhiteCount();
+    List<Cell> neighbours = getNeighbours();
+    setNextState(true);
+        
+    if (getAge() >= 10){
+        for (Cell neighbour : neighbours){
+            if (neighbour instanceof EmptyCell){
+                CancerCell newCancer = new CancerCell(neighbour.getSimulator(), neighbour.getField(), Color.RED);
+                getSimulator().addTemporaryCell(newCancer);
+                return;
+        
+            }
+            }
+    }
+        
     }
 
 }

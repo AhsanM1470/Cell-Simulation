@@ -200,22 +200,55 @@ public abstract class Cell {
         return whiteCount;
     }
     
+        /**
+     * Returns the number of cancer cell neighbours around a given cell
+     * @return The number of cancer cell neighbours
+     */
+    protected int getCancerCount(){
+        int cancerCount = 0;
+        List<Cell> neighbours = getNeighbours();
+        for(Cell neighbour : neighbours){
+            if(neighbour instanceof CancerCell){
+                cancerCount++;
+            }
+        }
+        return cancerCount;
+    }
+    
     /**
      * Check if the white blood cell is "mature".
      * Only mature white blood cells can attack other cells.
      * @return True if the white blood cell is equal to or older than 5 (generations)
      */
-    protected boolean matureWhiteNearby(){
+    protected int matureWhiteNearby(){
         List<Cell> neighbours = getNeighbours();
         for(Cell neighbour : neighbours){
             //what if I just did age? probably no works
-            if(neighbour instanceof WhiteBloodCell && neighbour.getAge() >= 5){
-                return true;
+            if(neighbour instanceof WhiteBloodCell){
+                if(neighbour.getAge() >= 5){
+                    return 1;
+                }
+                else if(neighbour.getAge() >= 5){
+                    return 2;
+                }
             }
         }
-        return false;
+        return 0;
     }
     
+    /**
+     * 
+     */
+    // protected boolean elderWhiteNearby(){
+        // List<Cell> neighbours = getNeighbours();
+        // for(Cell neighbour : neighbours){
+            // //what if I just did age? probably no works
+            // if(neighbour instanceof WhiteBloodCell && neighbour.getAge() >= 10){
+                // return true;
+            // }
+        // }
+        // return false;
+    // }
     /**
      * Return the cell's simulator
      * @param Return the cell's simulator

@@ -164,13 +164,23 @@ public class Simulator {
                 if (randResult <= 0.2) {
                     Mycoplasma myco = new Mycoplasma(this, field, location, Color.ORANGE);
                     cells.add(myco);
-                }else if(randResult > 0.2 && randResult <= 0.22){
+                }
+                
+                else if(randResult > 0.2 && randResult <= 0.22){
                     WhiteBloodCell white = new WhiteBloodCell(this, field, location, Color.PINK);
                     cells.add(white);
-                } else{
+                }
+                
+                else if (randResult > 0.22 && randResult <= 0.23){
+                    CancerCell cancer = new CancerCell(this, field, location, Color.RED);
+                    cells.add(cancer);
+                }
+                
+                else{
                     EmptyCell empty = new EmptyCell(this, field, location, Color.GRAY);
                     cells.add(empty);
                 }
+                
             }
         }
     }

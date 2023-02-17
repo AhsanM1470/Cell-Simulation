@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * Specialised cells: Mycoplasma, white blood cell, cancer cell
  */
 public class EmptyCell extends Cell {
+    private double randomNumber;
+
     /**
      * Create a new EmptyCell.
      *
@@ -17,6 +19,8 @@ public class EmptyCell extends Cell {
      */
     public EmptyCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
+        Random rand = new Random();
+        double randomNumber = rand.nextDouble();
     }
 
     /**
@@ -27,6 +31,8 @@ public class EmptyCell extends Cell {
      */
     public EmptyCell(Simulator simulator, Field field, Color col) {
         super(simulator, field, col);
+        Random rand = new Random();
+        double randomNumber = rand.nextDouble();
     }
 
     /**
@@ -40,16 +46,27 @@ public class EmptyCell extends Cell {
 
         //If there is 3 mycoplasma around it, it will be replaced by a mycoplasma.
             if (mycoCount == 3) {
-                setNextState(false);
                 Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
-                getSimulator().addTemporaryCell(newMyco);
+                Random rand = new Random();
+                randomNumber = rand.nextDouble();
+
+                if (randomNumber<= newMyco.getProbabilityForSpawningNewCell()){
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(newMyco);
+                }
+
                 return;
             }
             //Otherwise if there are at least 2 white blood cells around it, it will be replaced by a white blood cell.
             if (whiteCount > 2) {
-                setNextState(false);
                 WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
-                getSimulator().addTemporaryCell(newWhite);
+                Random rand = new Random();
+                randomNumber = rand.nextDouble();
+                if(randomNumber<= newWhite.getProbabilityForSpawningNewCell()){
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(newWhite);
+                }
+
                 return;
             }
 
@@ -64,10 +81,11 @@ public class EmptyCell extends Cell {
             if (cancerCount() > 0 && cancerCellNearby().getAge()%10 == 0) {
                 Random rand = new Random();
                 double randomNumber = rand.nextDouble();
-                    setNextState(false);
-                    CancerCell newWhite = new CancerCell(getSimulator(), getField(), Color.RED);
-                    getSimulator().addTemporaryCell(newWhite);
-
+                    CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);
+                    if(randomNumber <= newCancer.getProbabilityForSpawningNewCell()) {
+                        setNextState(false);
+                        getSimulator().addTemporaryCell(newCancer);
+                    }
                 return;
             }
 

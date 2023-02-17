@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class Mycoplasma extends Cell {
 
+    private double randomNumber;
     /**
      * Create a new Mycoplasma.
      *
@@ -31,6 +32,9 @@ public class Mycoplasma extends Cell {
     public Mycoplasma(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
+        changeProbabilityForSpawningNewCell(0.5);
+        Random rand = new Random();
+        randomNumber = rand.nextDouble();
     }
 
     /**
@@ -40,6 +44,9 @@ public class Mycoplasma extends Cell {
         int mycoCount = getMycoCount();
         //int whiteCount = getWhiteCount();
         setNextState(false);
+
+        affectMycoSpawnRate();
+
         //if(isAlive()){
             //If there are exactly 2 or 3 mycoplasma they will continue to live
             //Otherwise they are killed and replaced by an empty cell
@@ -55,16 +62,27 @@ public class Mycoplasma extends Cell {
             //If there is at least 1 mature white blood cell around them, they are killed.
             //80% of the time they are replaced by an empty cell. 20% of the time with another white blood cell.
             if(matureWhiteNearby() > 0){
-                Random rand = new Random();
-                double randResult = rand.nextDouble();
-                if(randResult <= 0.8){
+//                Random rand = new Random();
+//                double randResult = rand.nextDouble();
+                if(randomNumber <= 0.8){
                     EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
                     getSimulator().addTemporaryCell(newEmpty);
-                }else{
+                }else {
                     WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
-                    getSimulator().addTemporaryCell(newWhite);
+                    if (randomNumber <= -1) {
+                        getSimulator().addTemporaryCell(newWhite);
+                    }
                 }
             }
-        //}
     }
+
+    /**
+     * This method with the method affectCancerSpawnRate form the parasitic relationship.
+     */
+    public void affectMycoSpawnRate(){
+        if (cancerCount()>0){
+            changeProbabilityForSpawningNewCell(1.0);
+        }
+    }
+
 }

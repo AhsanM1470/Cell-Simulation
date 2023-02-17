@@ -42,7 +42,7 @@ public class Simulator {
      */
     public static void main(String[] args) {
       Simulator sim = new Simulator();
-      sim.simulate(100);
+      sim.simulate(400);
     }
 
     /**
@@ -112,7 +112,7 @@ public class Simulator {
         for (Cell cell : cells) {
             cell.updateState();
             cell.incrementAge();
-            if(cell instanceof WhiteBloodCell && cell.getAge() > 5){
+            if(cell instanceof WhiteBloodCell && cell.getAge() > 6){
                 cell.setColor(Color.WHITE);
             }
         }
@@ -171,7 +171,7 @@ public class Simulator {
                     cells.add(white);
                 }
                 
-                else if (randResult > 0.22 && randResult <= 0.23){
+                else if (randResult > 0.22 && randResult <= 0.221){
                     CancerCell cancer = new CancerCell(this, field, location, Color.RED);
                     cells.add(cancer);
                 }

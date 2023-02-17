@@ -3,40 +3,48 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Write a description of class WhiteBloodCell here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Attacks mycoplasma and cancer cells
  */
 public class WhiteBloodCell extends Cell
 {
     // instance variables - replace the example below with your own
 
     /**
-     * Constructor for objects of class WhiteBloodCell
+     * Create a new WhiteBloodVell.
+     *
+     * @param simulator The simulator used
+     * @param field The field currently occupied.
+     * @param location The location within the field.
      */
-    public WhiteBloodCell(Field field, Location location, Color col) {
-        super(field, location, col);
+    public WhiteBloodCell(Simulator simulator, Field field, Location location, Color col) {
+        super(simulator, field, location, col);
+    }
+    
+    /**
+     * Create a new WhiteBloodCell without a location on the field
+     *
+     * @param simulator The simulator used
+     * @param field The field currently occupied.
+     */
+    public WhiteBloodCell(Simulator simulator, Field field, Color col)
+    {
+        super(simulator, field, col);
     }
 
     /**
+     * How it is decided if white blood cells live/spread or not
      */
     public void act()
     {
-        List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
-        incrementAge();
-        setNextState(false);
-        
-        if(isAlive()){
-            int bacteriaCount = 0;
-            for(Cell cell : neighbours){
-                if(cell instanceof Mycoplasma){
-                    bacteriaCount++;
-                }
+        int mycoCount = getMycoCount();
+        setNextState(true);
+        //if(isAlive()){
+            //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
+            if(mycoCount >= 3){
+                setNextState(false);
+                Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
+                getSimulator().addTemporaryCell(newMyco);
             }
-            if(bacteriaCount < 3){
-                setNextState(true);
-            }
-        }
+        //}
     }
 }

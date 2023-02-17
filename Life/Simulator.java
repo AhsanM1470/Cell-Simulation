@@ -19,14 +19,14 @@ public class Simulator {
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
 
-    // The probability that a Mycoplasma is alive
-    private static final double MYCOPLASMA_ALIVE_PROB = 0.1;
-    
-    // The probability that a white blood cell is alive
-    private static final double WHITE_BLOOD_CELL_ALIVE_PROB = 0.2;
-
     // List of cells in the field.
     private List<Cell> cells;
+
+    //Newly generated cells that will be added to the cells ArrayList
+    private List<Cell> temporaryCells;
+    
+    //The locations on the field for the temporary cells
+    private List<Location> temporaryLocations;
 
     // The current state of the field.
     private Field field;
@@ -66,7 +66,9 @@ public class Simulator {
         }
 
         cells = new ArrayList<>();
+        temporaryCells = new ArrayList<>();
         field = new Field(depth, width);
+        temporaryLocations = new ArrayList<>();
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
@@ -104,14 +106,36 @@ public class Simulator {
         generation++;
         for (Iterator<Cell> it = cells.iterator(); it.hasNext(); ) {
             Cell cell = it.next();
-            
             cell.act();
         }
 
         for (Cell cell : cells) {
-          cell.updateState();
+            cell.updateState();
+            cell.incrementAge();
+            if(cell instanceof WhiteBloodCell && cell.getAge() > 6){
+                cell.setColor(Color.WHITE);
+            }
         }
+        
+        //Remove all dead cells and replace them with the newly generated cells in temporaryCells
+        Iterator<Cell> it = cells.iterator();
+        while(it.hasNext()){
+            Cell t = it.next();
+            if (!t.isAlive()){
+                temporaryLocations.add(t.getLocation());
+                it.remove();
+            }
+        }
+        
+        //Place the temporary cells on the field
+        for(Cell temporaryCell : temporaryCells){
+            temporaryCell.setLocation(temporaryLocations.get(0));
+            temporaryLocations.remove(0);
+            cells.add(temporaryCell);
+        }
+        
         view.showStatus(generation, field);
+        temporaryCells.clear();
     }
 
     /**
@@ -121,58 +145,43 @@ public class Simulator {
         generation = 0;
         cells.clear();
         field.clear();
-        mycoPopulate();
+        populate();
 
         // Show the starting state in the view.
         view.showStatus(generation, field);
-    }
+    }   
 
     /**
      * Randomly populate the field live/dead life forms
      */
-    private void mycoPopulate() {
-      Random mycoRand = Randomizer.getRandom();
-      Random whiteRand = Randomizer.getRandom();
+    private void populate() {
+        Random rand = Randomizer.getRandom();
       
-      for (int row = 0; row < field.getDepth(); row++) {
-        for (int col = 0; col < field.getWidth(); col++) {
-          Location location = new Location(row, col);
-          Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
-          if (mycoRand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
-            cells.add(myco);
-          }
-          else {
-            myco.setDead();
-            cells.add(myco);
-            // white.setDead();
-            // cells.add(white);
-          }
+        for (int row = 0; row < field.getDepth(); row++) {
+            for (int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
+                double randomNumber = rand.nextDouble();
+                if (randomNumber <= 0.2) {
+                    Mycoplasma myco = new Mycoplasma(this, field, location, Color.ORANGE);
+                    cells.add(myco);
+                }else if(randomNumber > 0.2 && randomNumber <= 0.22){
+                    WhiteBloodCell white = new WhiteBloodCell(this, field, location, Color.PINK);
+                    cells.add(white);
+                //**cancer cell populate here
+                } else{
+                    EmptyCell empty = new EmptyCell(this, field, location, Color.GRAY);
+                    cells.add(empty);
+                }
+            }
         }
-      }
     }
     
     /**
-     * Randomly populate the field live/dead life forms
+     * Add a cell to the temporaryCells ArrayList
      */
-    // private void populate() {
-      // Random Rand = Randomizer.getRandom();
-      // field.clear();
-      // for (int row = 0; row < field.getDepth(); row++) {
-        // for (int col = 0; col < field.getWidth(); col++) {
-          // Location mycoLocation = new Location(row, col);
-          // Location whiteLocation = new Location(row, col);
-          // Mycoplasma myco = new Mycoplasma(field, mycoLocation, Color.ORANGE);
-          // WhiteBloodCell white = new WhiteBloodCell(field, whiteLocation, Color.WHITE);
-          // if (rand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
-            // cells.add(myco);
-          // }
-          // else if (rand.nextDouble() <= WHITE_BLOOD_CELL_ALIVE_PROB) {
-            // myco.setDead();
-            // cells.add(myco);
-          // }
-        // }
-      // }
-    // }
+    public void addTemporaryCell(Cell cell){
+        temporaryCells.add(cell);
+    }
 
     /**
      * Pause for a given time.

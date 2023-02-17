@@ -17,7 +17,7 @@ public abstract class Cell {
     private boolean nextAlive;
     
     // How many generations the cell has lived for
-    private int age = 0;
+    private int age = 1;
 
     // The cell's field.
     private Field field;
@@ -204,7 +204,7 @@ public abstract class Cell {
      * Returns the number of cancer cell neighbours around a given cell
      * @return The number of cancer cell neighbours
      */
-    protected int getCancerCount(){
+    protected int cancerCount(){
         int cancerCount = 0;
         List<Cell> neighbours = getNeighbours();
         for(Cell neighbour : neighbours){
@@ -219,41 +219,58 @@ public abstract class Cell {
      * Check if the white blood cell is "mature".
      * Only mature white blood cells can attack other cells.
      * @return True if the white blood cell is equal to or older than 5 (generations)
+     * It says 6 generations because counting starts at 1
+     * Counting starts at 1 to prevent issues with the modulo operator
      */
     protected int matureWhiteNearby(){
         List<Cell> neighbours = getNeighbours();
         for(Cell neighbour : neighbours){
             //what if I just did age? probably no works
             if(neighbour instanceof WhiteBloodCell){
-                if(neighbour.getAge() >= 5){
+                if(neighbour.getAge() >= 6){
                     return 1;
                 }
-                else if(neighbour.getAge() >= 5){
+                else if(neighbour.getAge() >= 6){
                     return 2;
                 }
             }
         }
         return 0;
     }
-    
+
     /**
-     * 
+     *
      */
-    // protected boolean elderWhiteNearby(){
-        // List<Cell> neighbours = getNeighbours();
-        // for(Cell neighbour : neighbours){
+    protected Cell cancerCellNearby() {
+        for (Cell neighbour : getNeighbours()) {
+            if (neighbour instanceof CancerCell) {
+                return neighbour;
+
+            }
+        }
+        return null;
+    }
+
+            /**
+             *
+             */
+            // protected boolean elderWhiteNearby(){
+            // List<Cell> neighbours = getNeighbours();
+            // for(Cell neighbour : neighbours){
             // //what if I just did age? probably no works
             // if(neighbour instanceof WhiteBloodCell && neighbour.getAge() >= 10){
-                // return true;
+            // return true;
             // }
-        // }
-        // return false;
-    // }
-    /**
-     * Return the cell's simulator
-     * @param Return the cell's simulator
-     */
-    protected Simulator getSimulator(){
-        return simulator;
-    }
+            // }
+            // return false;
+            // }
+
+            /**
+             * Return the cell's simulator
+             * @return Return the cell's simulator
+             */
+            protected Simulator getSimulator(){
+                return simulator;
+            }
+
 }

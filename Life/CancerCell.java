@@ -9,6 +9,8 @@ import java.util.ArrayList;
  */
 public class CancerCell extends Cell
 {
+    private double probabilityForSpawningNewCancerCells;
+
     /**
      * Create a new CancerCell.
      *
@@ -30,6 +32,7 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
+        probabilityForSpawningNewCancerCells = 0.5;
     }
     
     /**
@@ -41,18 +44,27 @@ public class CancerCell extends Cell
     int whiteCount = getWhiteCount();
     List<Cell> neighbours = getNeighbours();
     setNextState(true);
+
+    //All the code for introducing new cancer cells is in the EmptyCell class.
+    //This is to avoid confusion inside the List containing temporary cells.
+//    if (getAge() % 10 == 0){
+//        for (Cell neighbour : neighbours) {
+//            if (neighbour instanceof EmptyCell) {
+//                neighbour.setNextState(false);
+//                CancerCell newCancer = new CancerCell(neighbour.getSimulator(), neighbour.getField(), Color.RED);
+//                getSimulator().addTemporaryCell(newCancer);
+//                return;
+
+//            }
+//        }
+//    }
         
-    if (getAge() >= 10){
-        for (Cell neighbour : neighbours){
-            if (neighbour instanceof EmptyCell){
-                CancerCell newCancer = new CancerCell(neighbour.getSimulator(), neighbour.getField(), Color.RED);
-                getSimulator().addTemporaryCell(newCancer);
-                return;
-        
-            }
-            }
     }
-        
-    }
+
+    /**
+     * This value is changed when a cancer cell comes into contact with a
+     *  mycoplasma
+     * @return the probability that a new Cancer cell is spawned from an empty cell
+     */
 
 }

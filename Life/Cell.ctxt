@@ -29,8 +29,8 @@ comment17.params=
 comment17.target=int\ getWhiteCount()
 comment17.text=\r\n\ Return\ the\ number\ of\ white\ blood\ cells\ neighbours\ around\ the\ cell\r\n\ @return\ The\ number\ of\ white\ blood\ cells\ neighbours\r\n
 comment18.params=
-comment18.target=boolean\ matureWhiteNearby()
-comment18.text=\r\n\ Check\ if\ the\ white\ blood\ cell\ is\ "mature".\r\n\ Only\ mature\ white\ blood\ cells\ can\ attack\ other\ cells.\r\n\ @return\ True\ if\ the\ white\ blood\ cell\ is\ equal\ to\ or\ older\ than\ 5\ (generations)\r\n
+comment18.target=int\ matureWhiteNearby()
+comment18.text=\r\n\ Check\ the\ white\ blood\ cell's\ maturity.\ Maturity\ levels\ affect\ the\ kind\r\n\ of\ cells\ it\ can\ attack.\r\n\ 0\ \=\ child.\ They\ cannot\ kill\ anything\r\n\ 1\ \=\ mature.\ They\ can\ only\ kill\ mycoplasma\r\n\ 2\ \=\ elder.\ They\ can\ kill\ mycoplasma\ and\ cancer\ cells\r\n
 comment19.params=
 comment19.target=Simulator\ getSimulator()
 comment19.text=\r\n\ Return\ the\ cell's\ simulator\r\n\ @param\ Return\ the\ cell's\ simulator\r\n

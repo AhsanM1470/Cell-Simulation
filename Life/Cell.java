@@ -201,19 +201,25 @@ public abstract class Cell {
     }
     
     /**
-     * Check if the white blood cell is "mature".
-     * Only mature white blood cells can attack other cells.
-     * @return True if the white blood cell is equal to or older than 5 (generations)
+     * Check the white blood cell's maturity. Maturity levels affect the kind
+     * of cells it can attack.
+     * 0 = child. They cannot kill anything
+     * 1 = mature. They can only kill mycoplasma
+     * 2 = elder. They can kill mycoplasma and cancer cells
      */
-    protected boolean matureWhiteNearby(){
+    protected int matureWhiteNearby(){
         List<Cell> neighbours = getNeighbours();
         for(Cell neighbour : neighbours){
-            //what if I just did age? probably no works
-            if(neighbour instanceof WhiteBloodCell && neighbour.getAge() >= 5){
-                return true;
+            int neighboursAge = neighbour.getAge();
+            if(neighbour instanceof WhiteBloodCell){
+                if(neighboursAge >= 5){
+                    return 1;
+                }else if(neighboursAge >= 10){
+                    return 2;
+                }
             }
         }
-        return false;
+        return 0;
     }
     
     /**

@@ -40,9 +40,9 @@ public class CancerCell extends Cell
         int mycoCount = getMycoCount();
         int whiteCount = getWhiteCount();
         setNextState(true);
-        if(isAlive()){
+        //if(isAlive()){
             
-        }
+        //}
     }
 
 }

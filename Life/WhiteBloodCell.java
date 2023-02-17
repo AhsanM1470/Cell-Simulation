@@ -38,13 +38,13 @@ public class WhiteBloodCell extends Cell
     {
         int mycoCount = getMycoCount();
         setNextState(true);
-        if(isAlive()){
+        //if(isAlive()){
             //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
             if(mycoCount >= 3){
                 setNextState(false);
                 Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
                 getSimulator().addTemporaryCell(newMyco);
             }
-        }
+        //}
     }
 }

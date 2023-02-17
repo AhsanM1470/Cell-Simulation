@@ -40,31 +40,42 @@ public class Mycoplasma extends Cell {
         int mycoCount = getMycoCount();
         //int whiteCount = getWhiteCount();
         setNextState(false);
-        if(isAlive()){
+        //if(isAlive()){
             //If there are exactly 2 or 3 mycoplasma they will continue to live
             //Otherwise they are killed and replaced by an empty cell
             if(mycoCount == 2 || mycoCount == 3) {
-               setNextState(true);
-               return;
+                // if(matureWhiteNearby() > 0){
+                    // whiteTakeover();
+                    // return;
+                // }
+                setNextState(true);
+                return;
             }else if(mycoCount < 2 || mycoCount > 3){
                 EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
                 getSimulator().addTemporaryCell(newEmpty);
                 //setNewCell(newEmpty);
                 return;
             }
+            
+            if(matureWhiteNearby() > 0){
+                whiteTakeover();
+            }
             //If there is at least 1 mature white blood cell around them, they are killed.
             //80% of the time they are replaced by an empty cell. 20% of the time with another white blood cell.
-            if(matureWhiteNearby()){
-                Random rand = new Random();
-                double randResult = rand.nextDouble();
-                if(randResult <= 0.8){
-                    EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
-                    getSimulator().addTemporaryCell(newEmpty);
-                }else{
-                    WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
-                    getSimulator().addTemporaryCell(newWhite);
-                }
-            }
+        //}
+    }
+    
+    //**get rid of this method later on perhaps
+    public void whiteTakeover(){
+        setNextState(false);
+        Random rand = new Random();
+        double randResult = rand.nextDouble();
+        if(randResult <= 0.8){
+            EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+            getSimulator().addTemporaryCell(newEmpty);
+        }else{
+            WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
+            getSimulator().addTemporaryCell(newWhite);
         }
     }
 }

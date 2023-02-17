@@ -10,4 +10,6 @@ comment2.text=\r\n\ Create\ a\ new\ Mycoplasma\ without\ a\ location\ on\ the\ f
 comment3.params=
 comment3.target=void\ act()
 comment3.text=\r\n\ This\ is\ how\ the\ Mycoplasma\ decides\ if\ it's\ alive\ or\ not\r\n
-numComments=4
+comment4.params=
+comment4.target=void\ whiteTakeover()
+numComments=5

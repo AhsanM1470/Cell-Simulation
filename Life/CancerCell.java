@@ -19,8 +19,7 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
-        changeProbabilityForSpawningNewCell(0.3);
-        affectCancerCount();
+        changeProbabilityForSpawningNewCell(0);
     }
     
     /**
@@ -33,7 +32,6 @@ public class CancerCell extends Cell
     {
         super(simulator, field, col);
         changeProbabilityForSpawningNewCell(0.3);
-        affectCancerCount();
     }
     
     /**
@@ -41,6 +39,7 @@ public class CancerCell extends Cell
      */
     public void act()
     {
+        affectCancerCount();
     int mycoCount = getMycoCount();
     int whiteCount = getWhiteCount();
     List<Cell> neighbours = getNeighbours();
@@ -49,14 +48,26 @@ public class CancerCell extends Cell
     //All the code for introducing new cancer cells is in the EmptyCell class.
     //This is to avoid confusion inside the List containing temporary cells.
 
+
+
+
     }
 
     /**
      * This method with the method affectMycoSpawnRate() form the parasitic relationship.
      */
     public void affectCancerCount(){
-        if(getMycoCount()>0){
-            changeProbabilityForSpawningNewCell(0.1);
+        if(getMycoCount() > 0){
+            changeProbabilityForSpawningNewCell(1);
+        }
+    }
+
+    /**
+     *
+     */
+    public void ahsefoihaliesufh(){
+        if(matureWhiteNearby() == 2){
+
         }
     }
 

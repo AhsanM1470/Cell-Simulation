@@ -19,8 +19,6 @@ public class EmptyCell extends Cell {
      */
     public EmptyCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
-        Random rand = new Random();
-        double randomNumber = rand.nextDouble();
     }
 
     /**
@@ -50,10 +48,10 @@ public class EmptyCell extends Cell {
                 Random rand = new Random();
                 randomNumber = rand.nextDouble();
 
-                if (randomNumber<= newMyco.getProbabilityForSpawningNewCell()){
+//                if (randomNumber<= newMyco.getProbabilityForSpawningNewCell()){
                     setNextState(false);
                     getSimulator().addTemporaryCell(newMyco);
-                }
+//                }
 
                 return;
             }
@@ -62,6 +60,7 @@ public class EmptyCell extends Cell {
                 WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
                 Random rand = new Random();
                 randomNumber = rand.nextDouble();
+//                if(true){
                 if(randomNumber<= newWhite.getProbabilityForSpawningNewCell()){
                     setNextState(false);
                     getSimulator().addTemporaryCell(newWhite);
@@ -78,7 +77,7 @@ public class EmptyCell extends Cell {
 //            }
 
         //Cancer cells spawn every ten generations
-            if (cancerCount() > 0 && cancerCellNearby().getAge()%10 == 0) {
+            if (cancerCount() > 0 && checkIfReplicableCancerCellIsNearby()) {
                 Random rand = new Random();
                 double randomNumber = rand.nextDouble();
                     CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);

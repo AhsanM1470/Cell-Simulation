@@ -32,9 +32,7 @@ public class Mycoplasma extends Cell {
     public Mycoplasma(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        changeProbabilityForSpawningNewCell(0.5);
-        Random rand = new Random();
-        randomNumber = rand.nextDouble();
+        changeProbabilityForSpawningNewCell(1);
     }
 
     /**
@@ -62,14 +60,14 @@ public class Mycoplasma extends Cell {
             //If there is at least 1 mature white blood cell around them, they are killed.
             //80% of the time they are replaced by an empty cell. 20% of the time with another white blood cell.
             if(matureWhiteNearby() > 0){
-//                Random rand = new Random();
-//                double randResult = rand.nextDouble();
+                Random rand = new Random();
+                double randResult = rand.nextDouble();
                 if(randomNumber <= 0.8){
                     EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
                     getSimulator().addTemporaryCell(newEmpty);
                 }else {
                     WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
-                    if (randomNumber <= -1) {
+                    if (randomNumber <= newWhite.getProbabilityForSpawningNewCell()) {
                         getSimulator().addTemporaryCell(newWhite);
                     }
                 }

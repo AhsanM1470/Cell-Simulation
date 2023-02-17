@@ -85,6 +85,7 @@ public abstract class Cell {
         return alive;
     }
 
+
     /**
      * Indicate that the cell is no longer alive.
      */
@@ -233,8 +234,9 @@ public abstract class Cell {
     }
     
     /**
-     * Check if the white blood cell is "mature".
-     * Only mature white blood cells can attack other cells.
+     * Check if the white blood cell is "mature" (returns 1) or "elder" (returns 2).
+     * Mature white blood cells can attack Mycoplasma cells.
+     * Elder white blood cells can attack Mycoplasma and Cancer cells.
      * @return True if the white blood cell is equal to or older than 5 (generations)
      * It says 6 generations because counting starts at 1
      * Counting starts at 1 to prevent issues with the modulo operator
@@ -256,16 +258,16 @@ public abstract class Cell {
     }
 
     /**
-     *
+     * @return
      */
-    protected Cell cancerCellNearby() {
+    protected Boolean checkIfReplicableCancerCellIsNearby() {
         for (Cell neighbour : getNeighbours()) {
-            if (neighbour instanceof CancerCell) {
-                return neighbour;
+            if (neighbour instanceof CancerCell && neighbour.getAge()%10 == 0) {
+                return true;
 
             }
         }
-        return null;
+        return false;
     }
 
             /**

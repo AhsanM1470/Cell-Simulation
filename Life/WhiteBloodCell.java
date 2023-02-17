@@ -7,8 +7,6 @@ import java.util.Random;
  */
 public class WhiteBloodCell extends Cell
 {
-    private double randomNumber;
-
     /**
      * Create a new WhiteBloodVell.
      *
@@ -19,7 +17,7 @@ public class WhiteBloodCell extends Cell
     public WhiteBloodCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
 
-        changeProbabilityForSpawningNewCell(0.8);
+        changeProbabilityForSpawningNewCell(1);
     }
     
     /**
@@ -31,9 +29,7 @@ public class WhiteBloodCell extends Cell
     public WhiteBloodCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        changeProbabilityForSpawningNewCell(0.1);
-        Random rand = new Random();
-        randomNumber = rand.nextDouble();
+        changeProbabilityForSpawningNewCell(1);
     }
 
     /**
@@ -47,6 +43,9 @@ public class WhiteBloodCell extends Cell
         //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
         if(mycoCount >= 3){
             Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
+            Random rand = new Random();
+            double randomNumber = rand.nextDouble();
+
             if(randomNumber <= newMyco.getProbabilityForSpawningNewCell()) {
                 setNextState(false);
                 getSimulator().addTemporaryCell(newMyco);

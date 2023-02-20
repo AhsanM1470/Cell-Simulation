@@ -250,11 +250,11 @@ public abstract class Cell {
         for(Cell neighbour : neighbours){
             //what if I just did age? probably no works
             if(neighbour instanceof WhiteBloodCell){
-                if(neighbour.getAge() >= 6){
-                    return 1;
+                if(neighbour.getAge() >= 11){
+                    return 2;
                 }
                 else if(neighbour.getAge() >= 6){
-                    return 2;
+                    return 1;
                 }
             }
         }

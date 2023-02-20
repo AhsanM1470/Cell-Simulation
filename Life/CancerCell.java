@@ -20,12 +20,6 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
-
-        //All of this is here to help with the probability in the initial population
-        if(flagForDeterminingWhenProbabilityShouldChange){
-            changeProbabilityForSpawningNewCell(1);
-//          System.out.println("x");
-        }
     }
     
     /**
@@ -37,12 +31,10 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        changeProbabilityForSpawningNewCell(0.5);
-//        System.out.println(flagForDeterminingWhenProbabilityShouldChange);
+        changeProbabilityForSpawningNewCell(0.3);
 
         if(flagForDeterminingWhenProbabilityShouldChange){
-          changeProbabilityForSpawningNewCell(0.8);
-//          System.out.println("x");
+          changeProbabilityForSpawningNewCell(0);
         }
 
     }
@@ -66,6 +58,14 @@ public class CancerCell extends Cell
         // multiple cells without the Myco parasitic condition
         setFlagForDeterminingWhenProbabilityShouldChange(false);
 
+
+        //Elder WBCs kill Cancer cells
+        if (matureWhiteNearby() == 2){
+            System.out.println("x");
+            setNextState(false);
+            EmptyCell empty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+            getSimulator().addTemporaryCell(empty);
+        }
     }
 
 

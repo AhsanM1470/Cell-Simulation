@@ -79,7 +79,7 @@ public class Mycoplasma extends Cell {
      */
     public void affectMycoSpawnRate(){
         if (cancerCount()>0){
-            changeProbabilityForSpawningNewCell(1.0);
+            changeProbabilityForSpawningNewCell(1);
         }
     }
 

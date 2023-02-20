@@ -19,8 +19,12 @@ public abstract class Cell {
     // How many generations the cell has lived for
     private int age = 1;
 
+
+
+    protected static boolean flagForDeterminingWhenProbabilityShouldChange = false;
+
     // The probability that a new cell spawns on top of its normal conditions.
-    private double probabilityForSpawningNewCell;
+    protected double probabilityForSpawningNewCell;
 
     // The cell's field.
     private Field field;

@@ -48,10 +48,10 @@ public class EmptyCell extends Cell {
                 Random rand = new Random();
                 randomNumber = rand.nextDouble();
 
-//                if (randomNumber<= newMyco.getProbabilityForSpawningNewCell()){
+                if (randomNumber<= newMyco.getProbabilityForSpawningNewCell()){
                     setNextState(false);
                     getSimulator().addTemporaryCell(newMyco);
-//                }
+                }
 
                 return;
             }
@@ -82,6 +82,7 @@ public class EmptyCell extends Cell {
                 double randomNumber = rand.nextDouble();
                     CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);
                     if(randomNumber <= newCancer.getProbabilityForSpawningNewCell()) {
+//                        System.out.println(newCancer.getProbabilityForSpawningNewCell());
                         setNextState(false);
                         getSimulator().addTemporaryCell(newCancer);
                     }

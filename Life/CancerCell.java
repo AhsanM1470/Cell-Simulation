@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class CancerCell extends Cell
 {
+
     /**
      * Create a new CancerCell.
      *
@@ -19,7 +20,6 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
-        changeProbabilityForSpawningNewCell(0);
     }
     
     /**
@@ -31,7 +31,13 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        changeProbabilityForSpawningNewCell(0.3);
+        changeProbabilityForSpawningNewCell(0);
+
+        if(flagForDeterminingWhenProbabilityShouldChange){
+          changeProbabilityForSpawningNewCell(1);
+//          System.out.println("x");
+        }
+
     }
     
     /**
@@ -40,16 +46,17 @@ public class CancerCell extends Cell
     public void act()
     {
         affectCancerCount();
-    int mycoCount = getMycoCount();
-    int whiteCount = getWhiteCount();
-    List<Cell> neighbours = getNeighbours();
-    setNextState(true);
+        int mycoCount = getMycoCount();
+        int whiteCount = getWhiteCount();
+        List<Cell> neighbours = getNeighbours();
+        setNextState(true);
 
-    //All the code for introducing new cancer cells is in the EmptyCell class.
-    //This is to avoid confusion inside the List containing temporary cells.
+        //All the code for introducing new cancer cells is in the EmptyCell class.
+        //This is to avoid confusion inside the List containing temporary cells.
 
 
 
+//        flagForDeterminingWhenProbabilityShouldChange = false;
 
     }
 
@@ -57,8 +64,13 @@ public class CancerCell extends Cell
      * This method with the method affectMycoSpawnRate() form the parasitic relationship.
      */
     public void affectCancerCount(){
+//        System.out.println(getMycoCount());
         if(getMycoCount() > 0){
-            changeProbabilityForSpawningNewCell(1);
+            flagForDeterminingWhenProbabilityShouldChange = true;
+        }
+
+        else{
+            flagForDeterminingWhenProbabilityShouldChange = false;
         }
     }
 
@@ -66,9 +78,15 @@ public class CancerCell extends Cell
      *
      */
     public void ahsefoihaliesufh(){
+        Random rand = new Random();
+        double randomNumber = rand.nextDouble();
         if(matureWhiteNearby() == 2){
+            WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
+            if(randomNumber <= newWhite.getProbabilityForSpawningNewCell()){
 
+            }
         }
+
     }
 
 

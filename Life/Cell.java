@@ -191,7 +191,23 @@ public abstract class Cell {
         List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
         return neighbours;
     }
-    
+
+
+    /**
+     * Passing Class as parameter to clean up code?
+     */
+//    protected int getCellCount(Class P){
+//        int cellCount = 0;
+//        List<Cell> neighbours = getNeighbours();
+//        for(Cell neighbour : neighbours){
+//            if(neighbour instanceof P){
+//                cellCount++;
+//            }
+//        }
+//        return cellCount;
+//
+//    }
+
     /**
      * Return the number of mycoplasma neighbours around the cell
      * @return The number of mycoplasma neighbours

@@ -45,7 +45,6 @@ public class WhiteBloodCell extends Cell
         //Actions based on whether this cell is diseased.
         if(isDiseased){
             setColor(Color.GREEN);
-            System.out.println("f");
 
             for(Cell neighbour : getNeighbours()){
                 if (neighbour instanceof WhiteBloodCell){

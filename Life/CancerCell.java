@@ -20,6 +20,12 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
+
+        //All of this is here to help with the probability in the initial population
+        if(flagForDeterminingWhenProbabilityShouldChange){
+            changeProbabilityForSpawningNewCell(1);
+//          System.out.println("x");
+        }
     }
     
     /**
@@ -31,10 +37,11 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        changeProbabilityForSpawningNewCell(0);
+        changeProbabilityForSpawningNewCell(0.5);
+//        System.out.println(flagForDeterminingWhenProbabilityShouldChange);
 
         if(flagForDeterminingWhenProbabilityShouldChange){
-          changeProbabilityForSpawningNewCell(1);
+          changeProbabilityForSpawningNewCell(0.8);
 //          System.out.println("x");
         }
 
@@ -45,7 +52,7 @@ public class CancerCell extends Cell
      */
     public void act()
     {
-        affectCancerCount();
+        affectProbabilityForPossibleCancerNeighbours();
         int mycoCount = getMycoCount();
         int whiteCount = getWhiteCount();
         List<Cell> neighbours = getNeighbours();
@@ -55,22 +62,37 @@ public class CancerCell extends Cell
         //This is to avoid confusion inside the List containing temporary cells.
 
 
-
-//        flagForDeterminingWhenProbabilityShouldChange = false;
+        //This ensures that the same flagged Cancer cell does not spawn
+        // multiple cells without the Myco parasitic condition
+        setFlagForDeterminingWhenProbabilityShouldChange(false);
 
     }
+
+
 
     /**
      * This method with the method affectMycoSpawnRate() form the parasitic relationship.
      */
-    public void affectCancerCount(){
-//        System.out.println(getMycoCount());
-        if(getMycoCount() > 0){
-            flagForDeterminingWhenProbabilityShouldChange = true;
-        }
+    public void affectProbabilityForPossibleCancerNeighbours(){
+        //Creates a list of neighbours and makes a separate one of new cancer cells
+        List<Cell> neighbours = getNeighbours();
 
-        else{
-            flagForDeterminingWhenProbabilityShouldChange = false;
+        //Modulo 9 means the generation before every tenth is checked to see if there
+        // is a nearby Mycoplasma
+        if(getMycoCount() > 0 && getAge()%10 == 9) {
+            for (Cell neighbour : neighbours) {
+                if (neighbour instanceof EmptyCell) {
+                    ((EmptyCell) neighbour).getTheArrayListOfCancerCells().clear();
+                    CancerCell cancer = new CancerCell(neighbour.getSimulator(), neighbour.getField(), Color.RED);
+                    cancer.setFlagForDeterminingWhenProbabilityShouldChange(true);
+
+                    //Casting here is fine because there is a check above for if neighbour is an EmptyCell
+                    //Adds the cancer cells to the ArrayList, so they have specific probabilities
+                    ((EmptyCell) neighbour).getTheArrayListOfCancerCells().add(cancer);
+
+                }
+
+            }
         }
     }
 

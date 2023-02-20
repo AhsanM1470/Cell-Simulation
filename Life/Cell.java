@@ -21,7 +21,7 @@ public abstract class Cell {
 
 
 
-    protected static boolean flagForDeterminingWhenProbabilityShouldChange = false;
+    protected boolean flagForDeterminingWhenProbabilityShouldChange = false;
 
     // The probability that a new cell spawns on top of its normal conditions.
     protected double probabilityForSpawningNewCell;
@@ -274,9 +274,24 @@ public abstract class Cell {
         return false;
     }
 
-            /**
-             *
-             */
+    /**
+     * @return The boolean value of the flag that determines if probability of spawning should change
+     */
+    protected boolean getFlagForDeterminingWhenProbabilityShouldChange(){
+        return flagForDeterminingWhenProbabilityShouldChange;
+    }
+
+    /**
+     * Changes the value of the flag for a given cell
+     */
+    protected void setFlagForDeterminingWhenProbabilityShouldChange(boolean flagValue){
+        flagForDeterminingWhenProbabilityShouldChange = flagValue;
+    }
+
+
+    /**
+     *
+     */
             // protected boolean elderWhiteNearby(){
             // List<Cell> neighbours = getNeighbours();
             // for(Cell neighbour : neighbours){

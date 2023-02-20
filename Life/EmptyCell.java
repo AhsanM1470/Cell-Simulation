@@ -9,6 +9,8 @@ import java.util.ArrayList;
  */
 public class EmptyCell extends Cell {
     private double randomNumber;
+//    private ArrayList<CancerCell> arrayListOfCancerCells;
+    private ArrayList<Cell> arrayListOfCancerCells;
 
     /**
      * Create a new EmptyCell.
@@ -19,6 +21,8 @@ public class EmptyCell extends Cell {
      */
     public EmptyCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
+
+        arrayListOfCancerCells = new ArrayList<>();
     }
 
     /**
@@ -31,6 +35,8 @@ public class EmptyCell extends Cell {
         super(simulator, field, col);
         Random rand = new Random();
         double randomNumber = rand.nextDouble();
+
+        arrayListOfCancerCells = new ArrayList<>();
     }
 
     /**
@@ -81,15 +87,35 @@ public class EmptyCell extends Cell {
                 Random rand = new Random();
                 double randomNumber = rand.nextDouble();
                     CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);
-                    if(randomNumber <= newCancer.getProbabilityForSpawningNewCell()) {
-//                        System.out.println(newCancer.getProbabilityForSpawningNewCell());
+
+                    //This checks if there are any Cancer cells already made with special probabilities
+                    if(!getTheArrayListOfCancerCells().isEmpty()){
+                        setNextState(false);
+                        getSimulator().addTemporaryCell(getTheArrayListOfCancerCells().get(0));
+                        return;
+                    }
+
+                    //This checks for normal Cancer cell probabilities
+                    else if(randomNumber <= newCancer.getProbabilityForSpawningNewCell()) {
                         setNextState(false);
                         getSimulator().addTemporaryCell(newCancer);
+                        return;
                     }
-                return;
             }
 
-
         }
+
+//    public ArrayList<CancerCell> getTheArrayListOfCancerCells(){
+//        return arrayListOfCancerCells;
+//    }
+
+    /**
+     * This is only used by CancerCell and EmptyCell classes to refer to Cancer cells
+     *  that have had their individual probabilities of spawning affected.
+     * @return ArrayList of Cancer cells with specific probabilities
+     */
+    protected ArrayList<Cell> getTheArrayListOfCancerCells(){
+        return arrayListOfCancerCells;
+    }
 
 }

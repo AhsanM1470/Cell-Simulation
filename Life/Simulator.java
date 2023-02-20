@@ -95,7 +95,7 @@ public class Simulator {
     public void simulate(int numGenerations) {
         for (int gen = 1; gen <= numGenerations && view.isViable(field); gen++) {
             simOneGeneration();
-//            delay(10);   // comment out to run simulation faster
+            delay(10);   // comment out to run simulation faster
         }
     }
 
@@ -113,7 +113,7 @@ public class Simulator {
         for (Cell cell : cells) {
             cell.updateState();
             cell.incrementAge();
-            if(cell instanceof WhiteBloodCell && cell.getAge() > 6){
+            if(cell instanceof WhiteBloodCell && cell.getAge() > 6 && !((WhiteBloodCell) cell).isDiseased()){
                 cell.setColor(Color.WHITE);
             }
         }

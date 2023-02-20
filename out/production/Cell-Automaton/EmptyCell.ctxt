@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=EmptyCell
+comment0.text=\r\n\ Used\ when\ there\ is\ no\ specialised\ cell\ at\ the\ location\ on\ the\ field.\r\n\ Specialised\ cells\:\ Mycoplasma,\ white\ blood\ cell,\ cancer\ cell\r\n
+comment1.params=simulator\ field\ location\ col
+comment1.target=EmptyCell(Simulator,\ Field,\ Location,\ java.awt.Color)
+comment1.text=\r\n\ Create\ a\ new\ EmptyCell.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ \ \ \ \ The\ field\ currently\ occupied.\r\n\ @param\ location\ \ The\ location\ within\ the\ field.\r\n
+comment2.params=simulator\ field\ col
+comment2.target=EmptyCell(Simulator,\ Field,\ java.awt.Color)
+comment2.text=\r\n\ Create\ a\ new\ EmptyCell\ without\ a\ location\ on\ the\ field.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ \ \ \ \ The\ field\ currently\ occupied.\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ How\ it\ is\ decided\ if\ the\ empty\ cell\ continues\ to\ exist\ or\ be\ replaced\ by\ a\ specialised\ cell\r\n
+numComments=4

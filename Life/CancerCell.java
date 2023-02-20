@@ -59,9 +59,11 @@ public class CancerCell extends Cell
         setFlagForDeterminingWhenProbabilityShouldChange(false);
 
 
+        //Causes disease in White Blood Cells
+        causeDisease();
+
         //Elder WBCs kill Cancer cells
         if (matureWhiteNearby() == 2){
-            System.out.println("x");
             setNextState(false);
             EmptyCell empty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
             getSimulator().addTemporaryCell(empty);
@@ -71,6 +73,7 @@ public class CancerCell extends Cell
 
 
     /**
+     * This method is pretty beautiful icl
      * This method with the method affectMycoSpawnRate() form the parasitic relationship.
      */
     public void affectProbabilityForPossibleCancerNeighbours(){
@@ -99,18 +102,12 @@ public class CancerCell extends Cell
     /**
      *
      */
-    public void ahsefoihaliesufh(){
-        Random rand = new Random();
-        double randomNumber = rand.nextDouble();
-        if(matureWhiteNearby() == 2){
-            WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
-            if(randomNumber <= newWhite.getProbabilityForSpawningNewCell()){
-
+    protected void causeDisease(){
+        for(Cell neighbour : getNeighbours()){
+            if (neighbour instanceof WhiteBloodCell){
+                ((WhiteBloodCell) neighbour).setMayBeDiseased(true);
             }
         }
-
     }
-
-
 
 }

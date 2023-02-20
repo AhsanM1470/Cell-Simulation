@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Mycoplasma
+comment0.text=\r\n\ A\ type\ of\ bacteria\r\n\r\n\ @author\ David\ J.\ Barnes,\ Michael\ K\u00F6lling\ &\ Jeffery\ Raphael\r\n\ @version\ \r\n
+comment1.params=simulator\ field\ location\ col
+comment1.target=Mycoplasma(Simulator,\ Field,\ Location,\ java.awt.Color)
+comment1.text=\r\n\ Create\ a\ new\ Mycoplasma.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment2.params=simulator\ field\ col
+comment2.target=Mycoplasma(Simulator,\ Field,\ java.awt.Color)
+comment2.text=\r\n\ Create\ a\ new\ Mycoplasma\ without\ a\ location\ on\ the\ field.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ This\ is\ how\ the\ Mycoplasma\ decides\ if\ it's\ alive\ or\ not\r\n
+comment4.params=
+comment4.target=void\ affectMycoSpawnRate()
+comment4.text=\r\n\ This\ method\ with\ the\ method\ affectCancerSpawnRate\ form\ the\ parasitic\ relationship.\r\n
+numComments=5

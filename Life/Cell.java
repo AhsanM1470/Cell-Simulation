@@ -243,7 +243,8 @@ public abstract class Cell {
      * Elder white blood cells can attack Mycoplasma and Cancer cells.
      * @return True if the white blood cell is equal to or older than 5 (generations)
      * It says 6 generations because counting starts at 1
-     * Counting starts at 1 to prevent issues with the modulo operator
+     * Counting starts at 1 to prevent issues with the modulo operator when looking
+     *  for a zero value
      */
     protected int matureWhiteNearby(){
         List<Cell> neighbours = getNeighbours();

@@ -7,6 +7,8 @@ import java.util.Random;
  */
 public class WhiteBloodCell extends Cell
 {
+    private boolean isDiseased = false;
+
     /**
      * Create a new WhiteBloodVell.
      *
@@ -29,7 +31,7 @@ public class WhiteBloodCell extends Cell
     public WhiteBloodCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        changeProbabilityForSpawningNewCell(1);
+        changeProbabilityForSpawningNewCell(0.6);
     }
 
     /**
@@ -39,6 +41,21 @@ public class WhiteBloodCell extends Cell
     {
         int mycoCount = getMycoCount();
         setNextState(true);
+
+        //Actions based on whether this cell is diseased.
+        if(isDiseased){
+            setColor(Color.GREEN);
+            System.out.println("f");
+
+            for(Cell neighbour : getNeighbours()){
+                if (neighbour instanceof WhiteBloodCell){
+                    ((WhiteBloodCell) neighbour).setMayBeDiseased(true);
+                }
+            }
+
+
+
+        }
 
         //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
         if(mycoCount >= 3){
@@ -53,6 +70,48 @@ public class WhiteBloodCell extends Cell
 
         }
 
+        //If they are surrounded by at least 3 diseased cells, they are killed
+        else if (getDiseasedCount() > 2){
+            setNextState(false);
+            EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+            getSimulator().addTemporaryCell(newEmpty);
+        }
+
     }
     //}
+
+    /**
+     * Allows you to change whether a particular WBC is diseased or not.
+     * Diseased WBCs attack any cell, even other WBCs.
+     */
+    public void setMayBeDiseased(boolean diseasedValue) {
+        Random rand = new Random();
+        double randomNumber = rand.nextDouble();
+        if (randomNumber < 0.01) {
+            isDiseased = diseasedValue;
+        }
+
+    }
+
+    /**
+     * @return Whether this White Blood Cell is diseased.
+     */
+    public boolean isDiseased(){
+        return isDiseased;
+    }
+
+    /**
+     * Return the number of mycoplasma neighbours around the cell
+     * @return The number of mycoplasma neighbours
+     */
+    protected int getDiseasedCount(){
+        int diseasedCount = 0;
+        for(Cell neighbour : getNeighbours()){
+            if(neighbour instanceof WhiteBloodCell && ((WhiteBloodCell) neighbour).isDiseased()){
+                diseasedCount++;
+            }
+        }
+        return diseasedCount;
+    }
+
 }

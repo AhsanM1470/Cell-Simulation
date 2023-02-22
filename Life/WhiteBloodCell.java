@@ -7,8 +7,7 @@ import java.util.Random;
  */
 public class WhiteBloodCell extends Cell
 {
-    // instance variables - replace the example below with your own
-
+    private boolean isDiseased = false;
 
     /**
      * Create a new WhiteBloodVell.
@@ -19,8 +18,8 @@ public class WhiteBloodCell extends Cell
      */
     public WhiteBloodCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
-        //these were 1 in saihan's code
-        setSpawnProbability(0.95);
+
+        changeProbabilityForSpawningNewCell(1);
     }
 
     /**
@@ -32,7 +31,7 @@ public class WhiteBloodCell extends Cell
     public WhiteBloodCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        setSpawnProbability(0.95);
+        changeProbabilityForSpawningNewCell(0.6);
     }
 
     /**
@@ -42,18 +41,83 @@ public class WhiteBloodCell extends Cell
     {
         int mycoCount = getMycoCount();
         setNextState(true);
-        //if(isAlive()){
-            //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
-            if(mycoCount >= 3){
-                Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
-                Random rand = new Random();
-                double randomNumber = rand.nextDouble();
 
-                if(randomNumber <= newMyco.getSpawnProbability()){
-                    setNextState(false);
-                    getSimulator().addTemporaryCell(newMyco);
+        //Actions based on whether this cell is diseased.
+        if(isDiseased){
+            setColor(Color.MAGENTA);
+
+            for(Cell neighbour : getNeighbours()){
+                if (neighbour instanceof WhiteBloodCell){
+                    ((WhiteBloodCell) neighbour).setMayBeDiseased(true);
                 }
             }
-        //}
+
+            if (getAge() > 41){
+                setNextState(false);
+                EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+                getSimulator().addTemporaryCell(newEmpty);
+                return;
+            }
+
+
+
+        }
+
+        //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
+        if(mycoCount >= 3){
+            Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
+            Random rand = new Random();
+            double randomNumber = rand.nextDouble();
+
+            if(randomNumber <= newMyco.getProbabilityForSpawningNewCell()) {
+                setNextState(false);
+                getSimulator().addTemporaryCell(newMyco);
+            }
+
+        }
+
+        //If they are surrounded by at least 3 diseased cells, they are killed
+        else if (getDiseasedCount() > 2){
+            setNextState(false);
+            EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+            getSimulator().addTemporaryCell(newEmpty);
+        }
+
     }
+    //}
+
+    /**
+     * Allows you to change whether a particular WBC is diseased or not.
+     * Diseased WBCs attack any cell, even other WBCs.
+     */
+    public void setMayBeDiseased(boolean diseasedValue) {
+        Random rand = new Random();
+        double randomNumber = rand.nextDouble();
+        if (randomNumber < 0.01) {
+            isDiseased = diseasedValue;
+        }
+
+    }
+
+    /**
+     * @return Whether this White Blood Cell is diseased.
+     */
+    public boolean isDiseased(){
+        return isDiseased;
+    }
+
+    /**
+     * Return the number of mycoplasma neighbours around the cell
+     * @return The number of mycoplasma neighbours
+     */
+    protected int getDiseasedCount(){
+        int diseasedCount = 0;
+        for(Cell neighbour : getNeighbours()){
+            if(neighbour instanceof WhiteBloodCell && ((WhiteBloodCell) neighbour).isDiseased()){
+                diseasedCount++;
+            }
+        }
+        return diseasedCount;
+    }
+
 }

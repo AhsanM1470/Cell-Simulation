@@ -24,7 +24,7 @@ public class Simulator {
 
     //Newly generated cells that will be added to the cells ArrayList
     private List<Cell> temporaryCells;
-    
+
     //The locations on the field for the temporary cells
     private List<Location> temporaryLocations;
 
@@ -41,8 +41,9 @@ public class Simulator {
      * Execute simulation
      */
     public static void main(String[] args) {
-      Simulator sim = new Simulator();
-      sim.simulate(100);
+        Simulator sim = new Simulator();
+        sim.simulate(1);
+//        sim.simulate(30);
     }
 
     /**
@@ -71,7 +72,8 @@ public class Simulator {
         temporaryLocations = new ArrayList<>();
 
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width, this);
+        view = new SimulatorView(depth, width, this
+        );
 
         // Setup a valid starting point.
         reset();
@@ -94,7 +96,7 @@ public class Simulator {
     public void simulate(int numGenerations) {
         for (int gen = 1; gen <= numGenerations && view.isViable(field); gen++) {
             simOneGeneration();
-            delay(10);   // comment out to run simulation faster
+            delay(1000);   // comment out to run simulation faster
         }
     }
 
@@ -112,11 +114,11 @@ public class Simulator {
         for (Cell cell : cells) {
             cell.updateState();
             cell.incrementAge();
-            if(cell instanceof WhiteBloodCell && cell.getAge() > 6){
+            if(cell instanceof WhiteBloodCell && cell.getAge() > 6 && !((WhiteBloodCell) cell).isDiseased()){
                 cell.setColor(Color.WHITE);
             }
         }
-        
+
         //Remove all dead cells and replace them with the newly generated cells in temporaryCells
         Iterator<Cell> it = cells.iterator();
         while(it.hasNext()){
@@ -126,14 +128,14 @@ public class Simulator {
                 it.remove();
             }
         }
-        
+
         //Place the temporary cells on the field
         for(Cell temporaryCell : temporaryCells){
             temporaryCell.setLocation(temporaryLocations.get(0));
             temporaryLocations.remove(0);
             cells.add(temporaryCell);
         }
-        
+
         view.showStatus(generation, field);
         temporaryCells.clear();
     }
@@ -149,33 +151,42 @@ public class Simulator {
 
         // Show the starting state in the view.
         view.showStatus(generation, field);
-    }   
+    }
 
     /**
      * Randomly populate the field live/dead life forms
      */
     private void populate() {
         Random rand = Randomizer.getRandom();
-      
+
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 Location location = new Location(row, col);
-                double randomNumber = rand.nextDouble();
-                if (randomNumber <= 0.2) {
+                double randResult = rand.nextDouble();
+                if (randResult <= 0.2) {
                     Mycoplasma myco = new Mycoplasma(this, field, location, Color.ORANGE);
                     cells.add(myco);
-                }else if(randomNumber > 0.2 && randomNumber <= 0.22){
+                }
+
+                else if(randResult > 0.2 && randResult <= 0.22){
                     WhiteBloodCell white = new WhiteBloodCell(this, field, location, Color.PINK);
                     cells.add(white);
-                //tk cancer cell populate here
-                } else{
+                }
+
+                else if (randResult > 0.22 && randResult <= 0.221){
+                    CancerCell cancer = new CancerCell(this, field, location, Color.RED);
+                    cells.add(cancer);
+                }
+
+                else{
                     EmptyCell empty = new EmptyCell(this, field, location, Color.GRAY);
                     cells.add(empty);
                 }
+
             }
         }
     }
-    
+
     /**
      * Add a cell to the temporaryCells ArrayList
      */

@@ -44,12 +44,19 @@ public class WhiteBloodCell extends Cell
 
         //Actions based on whether this cell is diseased.
         if(isDiseased){
-            setColor(Color.GREEN);
+            setColor(Color.MAGENTA);
 
             for(Cell neighbour : getNeighbours()){
                 if (neighbour instanceof WhiteBloodCell){
                     ((WhiteBloodCell) neighbour).setMayBeDiseased(true);
                 }
+            }
+
+            if (getAge() > 41){
+                setNextState(false);
+                EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+                getSimulator().addTemporaryCell(newEmpty);
+                return;
             }
 
 

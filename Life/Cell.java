@@ -196,17 +196,18 @@ public abstract class Cell {
     /**
      * Passing Class as parameter to clean up code?
      */
-//    protected int getCellCount(Class P){
-//        int cellCount = 0;
-//        List<Cell> neighbours = getNeighbours();
-//        for(Cell neighbour : neighbours){
-//            if(neighbour instanceof P){
-//                cellCount++;
-//            }
-//        }
-//        return cellCount;
-//
-//    }
+    protected int getCellCount(Class c){
+        int cellCount = 0;
+//        Class<? extends Cell> classOfCell = cell.getClass();
+        List<Cell> neighbours = getNeighbours();
+        for(Cell neighbour : neighbours){
+            if(neighbour.getClass().equals(c)){
+                cellCount++;
+            }
+        }
+        return cellCount;
+
+    }
 
     /**
      * Return the number of mycoplasma neighbours around the cell

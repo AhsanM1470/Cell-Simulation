@@ -44,6 +44,10 @@ public class CancerCell extends Cell
      */
     public void act()
     {
+        System.out.println(getCellCount(Mycoplasma.class));
+
+
+
         affectProbabilityForPossibleCancerNeighbours();
         int mycoCount = getMycoCount();
         int whiteCount = getWhiteCount();
@@ -65,8 +69,8 @@ public class CancerCell extends Cell
         //Elder WBCs kill Cancer cells
         if (matureWhiteNearby() == 2){
             setNextState(false);
-            EmptyCell empty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
-            getSimulator().addTemporaryCell(empty);
+            EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+            getSimulator().addTemporaryCell(newEmpty);
         }
     }
 

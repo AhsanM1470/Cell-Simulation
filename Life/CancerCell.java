@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class CancerCell extends Cell
 {
+
     /**
      * Create a new CancerCell.
      *
@@ -19,10 +20,8 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
-        //this was 0 in Saihan's code
-        setSpawnProbability(0.3);
     }
-    
+
     /**
      * Create a new CancerCell without a location on the field.
      *
@@ -32,25 +31,87 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        setSpawnProbability(0.3);
+        changeProbabilityForSpawningNewCell(0.3);
+
+        if(flagForDeterminingWhenProbabilityShouldChange){
+            changeProbabilityForSpawningNewCell(0);
+        }
+
     }
-    
+
     /**
      * How it is decided if the cancer cell lives/spreads or not
      */
     public void act()
     {
+        System.out.println(getCellCount(Mycoplasma.class));
+
+
+
+        affectProbabilityForPossibleCancerNeighbours();
         int mycoCount = getMycoCount();
         int whiteCount = getWhiteCount();
+        List<Cell> neighbours = getNeighbours();
         setNextState(true);
-        
-        if(mycoCount > 0){
-            setSpawnProbability(0.25);
+
+        //All the code for introducing new cancer cells is in the EmptyCell class.
+        //This is to avoid confusion inside the List containing temporary cells.
+
+
+        //This ensures that the same flagged Cancer cell does not spawn
+        // multiple cells without the Myco parasitic condition
+        setFlagForDeterminingWhenProbabilityShouldChange(false);
+
+
+        //Causes disease in White Blood Cells
+        causeDisease();
+
+        //Elder WBCs kill Cancer cells
+        if (matureWhiteNearby() == 2){
+            setNextState(false);
+            EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
+            getSimulator().addTemporaryCell(newEmpty);
         }
-        
-        //if(isAlive()){
-            
-        //}
+    }
+
+
+
+    /**
+     * This method is pretty beautiful icl
+     * This method with the method affectMycoSpawnRate() form the parasitic relationship.
+     */
+    public void affectProbabilityForPossibleCancerNeighbours(){
+        //Creates a list of neighbours and makes a separate one of new cancer cells
+        List<Cell> neighbours = getNeighbours();
+
+        //Modulo 9 means the generation before every tenth is checked to see if there
+        // is a nearby Mycoplasma
+        if(getMycoCount() > 0 && getAge()%10 == 9) {
+            for (Cell neighbour : neighbours) {
+                if (neighbour instanceof EmptyCell) {
+                    ((EmptyCell) neighbour).getTheArrayListOfCancerCells().clear();
+                    CancerCell cancer = new CancerCell(neighbour.getSimulator(), neighbour.getField(), Color.RED);
+                    cancer.setFlagForDeterminingWhenProbabilityShouldChange(true);
+
+                    //Casting here is fine because there is a check above for if neighbour is an EmptyCell
+                    //Adds the cancer cells to the ArrayList, so they have specific probabilities
+                    ((EmptyCell) neighbour).getTheArrayListOfCancerCells().add(cancer);
+
+                }
+
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    protected void causeDisease(){
+        for(Cell neighbour : getNeighbours()){
+            if (neighbour instanceof WhiteBloodCell){
+                ((WhiteBloodCell) neighbour).setMayBeDiseased(true);
+            }
+        }
     }
 
 }

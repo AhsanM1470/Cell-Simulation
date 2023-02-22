@@ -18,6 +18,8 @@ public class WhiteBloodCell extends Cell
      */
     public WhiteBloodCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
+        //these were 1 in saihan's code
+        setSpawnProbability(0.95);
     }
     
     /**
@@ -29,6 +31,7 @@ public class WhiteBloodCell extends Cell
     public WhiteBloodCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
+        setSpawnProbability(0.95);
     }
 
     /**
@@ -41,9 +44,14 @@ public class WhiteBloodCell extends Cell
         //if(isAlive()){
             //If they are surrounded by at least 3 mycolplasma, they are killed and replaced by a new mycoplasma
             if(mycoCount >= 3){
-                setNextState(false);
                 Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
-                getSimulator().addTemporaryCell(newMyco);
+                Random rand = new Random();
+                double randomNumber = rand.nextDouble();
+                
+                if(randomNumber <= newMyco.getSpawnProbability()){
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(newMyco);   
+                }
             }
         //}
     }

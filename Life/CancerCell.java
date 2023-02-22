@@ -19,6 +19,8 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
+        //this was 0 in Saihan's code
+        setSpawnProbability(0.3);
     }
     
     /**
@@ -30,6 +32,7 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
+        setSpawnProbability(0.3);
     }
     
     /**
@@ -40,6 +43,11 @@ public class CancerCell extends Cell
         int mycoCount = getMycoCount();
         int whiteCount = getWhiteCount();
         setNextState(true);
+        
+        if(mycoCount > 0){
+            setSpawnProbability(0.25);
+        }
+        
         //if(isAlive()){
             
         //}

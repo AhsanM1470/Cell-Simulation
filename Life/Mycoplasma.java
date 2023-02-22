@@ -20,6 +20,8 @@ public class Mycoplasma extends Cell {
      */
     public Mycoplasma(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
+        //**this was not here in saihan's code
+        setSpawnProbability(0.97);
     }
     
     /**
@@ -31,6 +33,7 @@ public class Mycoplasma extends Cell {
     public Mycoplasma(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
+        setSpawnProbability(0.97);
     }
 
     /**
@@ -40,7 +43,11 @@ public class Mycoplasma extends Cell {
         int mycoCount = getMycoCount();
         //int whiteCount = getWhiteCount();
         setNextState(false);
-        //if(isAlive()){
+        
+        if(getCancerCount() > 0){
+            setSpawnProbability(1);
+        }
+        
             //If there are exactly 2 or 3 mycoplasma they will continue to live
             //Otherwise they are killed and replaced by an empty cell
             if(mycoCount == 2 || mycoCount == 3) {
@@ -62,20 +69,23 @@ public class Mycoplasma extends Cell {
             }
             //If there is at least 1 mature white blood cell around them, they are killed.
             //80% of the time they are replaced by an empty cell. 20% of the time with another white blood cell.
-        //}
     }
     
     //**get rid of this method later on perhaps
     public void whiteTakeover(){
+        //is that next state necessary?
         setNextState(false);
         Random rand = new Random();
-        double randResult = rand.nextDouble();
-        if(randResult <= 0.8){
+        double randomNumber = rand.nextDouble();
+        if(randomNumber <= 0.8){
             EmptyCell newEmpty = new EmptyCell(getSimulator(), getField(), Color.GRAY);
             getSimulator().addTemporaryCell(newEmpty);
         }else{
             WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
-            getSimulator().addTemporaryCell(newWhite);
+            //i might wanna change this
+            if(randomNumber <= newWhite.getSpawnProbability()){
+                getSimulator().addTemporaryCell(newWhite);
+            }
         }
     }
 }

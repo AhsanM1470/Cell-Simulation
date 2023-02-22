@@ -16,6 +16,10 @@ public class EmptyCell extends Cell
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
+    
+    //--
+    private double randomNumber;
+    
     public EmptyCell(Simulator simulator, Field field, Location location, Color col)
     {
         super(simulator, field, location, col);
@@ -37,25 +41,45 @@ public class EmptyCell extends Cell
      */
     public void act()
     {
-        int mycoCount = getMycoCount();
-        int whiteCount = getWhiteCount();
         setNextState(true);
-        //if(isAlive()){
+        
             //If there is 3 mycoplasma around it, it will be replaced by a mycoplasma.
-            if(mycoCount == 3){
-                setNextState(false);
+            if(getMycoCount() == 3){
                 Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
-                getSimulator().addTemporaryCell(newMyco);
+                Random rand = new Random();
+                randomNumber = rand.nextDouble();
+                
+                if(randomNumber <= newMyco.getSpawnProbability()){
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(newMyco);
+                }
                 return;
             }
+            
             //Otherwise if there are at least 2 white blood cells around it, it will be replaced by a white blood cell.
-            if(whiteCount > 2){
-                setNextState(false);
+            if(getWhiteCount() > 2){
+                Random rand = new Random();
+                randomNumber = rand.nextDouble();
                 WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
-                getSimulator().addTemporaryCell(newWhite);
+                
+                if(randomNumber <= newWhite.getSpawnProbability()){
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(newWhite);
+                }
                 return;
             }
-        //}
+            
+            if(replicableCancerNearby()){
+                Random rand = new Random();
+                randomNumber = rand.nextDouble();
+                CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);
+                
+                if(randomNumber <= newCancer.getSpawnProbability()){
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(newCancer);
+                }
+                return;
+            }
     }
 
 }

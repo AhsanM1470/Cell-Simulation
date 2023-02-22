@@ -17,7 +17,13 @@ public abstract class Cell {
     private boolean nextAlive;
     
     // How many generations the cell has lived for
-    private int age = 0;
+    private int age = 1;
+    
+    //The cell's probability to spawn on the field
+    private double spawnProbability;
+    
+    //The cell's simulator
+    private Simulator simulator;
 
     // The cell's field.
     private Field field;
@@ -25,13 +31,10 @@ public abstract class Cell {
     // The cell's position in the field.
     private Location location;
 
-    // The cell's color
+    //**The cell's color. Should I change this to nothing?
     private Color color = Color.white;
     
     //**private List<Cell> neighbours;
-    
-    //The cell's simulator
-    private Simulator simulator;
 
     /**
      * Create a new cell at location in field.
@@ -102,21 +105,46 @@ public abstract class Cell {
     public void updateState() {
       alive = nextAlive;
     }
-
+    
     /**
-     * Changes the color of the cell
+     * Return the cell's age (in generations)
+     * @return The cell's age (measured in generations)
      */
-    public void setColor(Color col) {
-      color = col;
+    protected int getAge() {
+        return age;
+    }
+    
+    /**
+     * Increases the cell's age by 1
+     */
+    protected void incrementAge(){
+        age++;
+    }
+    
+    protected double getSpawnProbability(){
+        return spawnProbability;
+    }
+    
+    protected void setSpawnProbability(double newProbability){
+        spawnProbability = newProbability;
+    }
+    
+    /**
+     * Return the cell's simulator
+     * @param Return the cell's simulator
+     */
+    protected Simulator getSimulator(){
+        return simulator;
     }
 
     /**
-     * Returns the cell's color
+     * Return the cell's field.
+     * @return The cell's field.
      */
-    public Color getColor() {
-      return color;
+    protected Field getField() {
+        return field;
     }
-
+    
     /**
      * Return the cell's location.
      * @return The cell's location.
@@ -133,33 +161,24 @@ public abstract class Cell {
         this.location = location;
         field.place(this, location);
     }
-
+    
     /**
-     * Return the cell's field.
-     * @return The cell's field.
+     * Returns the cell's color
      */
-    protected Field getField() {
-        return field;
+    public Color getColor() {
+      return color;
+    }
+    
+    /**
+     * Changes the color of the cell
+     */
+    public void setColor(Color col) {
+      color = col;
     }
     
     // protected List<Cell> getNeighbours(){
         // return neighbours;
     // }
-    
-    /**
-     * Return the cell's age (in generations)
-     * @return The cell's age (measured in generations)
-     */
-    protected int getAge() {
-        return age;
-    }
-    
-    /**
-     * Increases the cell's age by 1
-     */
-    protected void incrementAge(){
-        age++;
-    }
     
     /**
      * Return all alive cells around the cell
@@ -201,6 +220,21 @@ public abstract class Cell {
     }
     
     /**
+     * Return the number of cancer cells neighbours around the cell
+     * @return The number of cancer cells neighbours
+     */
+    protected int getCancerCount(){
+        int cancerCount = 0;
+        List<Cell> neighbours = getNeighbours();
+        for(Cell neighbour : neighbours){
+            if(neighbour instanceof CancerCell){
+                cancerCount++;
+            }
+        }
+        return cancerCount;
+    }
+    
+    /**
      * Check the white blood cell's maturity. Maturity levels affect the kind
      * of cells it can attack.
      * 0 = child. They cannot kill anything
@@ -212,9 +246,9 @@ public abstract class Cell {
         for(Cell neighbour : neighbours){
             int neighboursAge = neighbour.getAge();
             if(neighbour instanceof WhiteBloodCell){
-                if(neighboursAge >= 5){
+                if(neighboursAge >= 6){
                     return 1;
-                }else if(neighboursAge >= 10){
+                }else if(neighboursAge >= 11){
                     return 2;
                 }
             }
@@ -222,11 +256,14 @@ public abstract class Cell {
         return 0;
     }
     
-    /**
-     * Return the cell's simulator
-     * @param Return the cell's simulator
-     */
-    protected Simulator getSimulator(){
-        return simulator;
+    protected boolean replicableCancerNearby(){
+        //**do this getNeighbours() thing in all of them
+        for(Cell neighbour : getNeighbours()){
+            if(neighbour instanceof CancerCell && neighbour.getAge()%10 == 0){
+                return true;
+            }
+        }
+        return false;
     }
+    
 }

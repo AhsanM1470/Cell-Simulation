@@ -13,7 +13,10 @@ import java.util.Map;
  * @version 2022.01.06 (1)
  */
 
-public class SimulatorView extends JFrame {
+public class SimulatorView extends JFrame implements ActionListener {
+    //tk
+    private Simulator simulator;
+    
     // Colors used for empty locations.
     private static final Color EMPTY_COLOR = Color.blue;
 
@@ -28,6 +31,9 @@ public class SimulatorView extends JFrame {
 
     // GUI labels
     private JLabel genLabel, population, infoLabel;
+    
+    //tk
+    private JButton longSimButton, oneSimButton, xSimButton, resetButton;
 
     // Extends the multi-line plain text view to be suitable for a single-line
     // editor view. (part of Swing)
@@ -41,32 +47,70 @@ public class SimulatorView extends JFrame {
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width) {
+    public SimulatorView(int height, int width, Simulator simulator) {
         stats = new FieldStats();
+        this.simulator = simulator;
 
         setTitle("Life Simulation");
         genLabel = new JLabel(GENERATION_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
-
+        //
+        longSimButton = new JButton();
+        longSimButton.addActionListener(this);
+        
+        oneSimButton = new JButton();
+        oneSimButton.addActionListener(this);
+        
+        xSimButton = new JButton();
+        xSimButton.addActionListener(this);
+        
+        resetButton = new JButton();
+        resetButton.addActionListener(this);
+        //
+        
         setLocation(100, 50);
 
         fieldView = new FieldView(height, width);
 
         Container contents = getContentPane();
-
+        
         JPanel infoPane = new JPanel(new BorderLayout());
             infoPane.add(genLabel, BorderLayout.WEST);
-            infoPane.add(infoLabel, BorderLayout.CENTER);
+            //tk does infoPane serve any purpose
+            //infoPane.add(infoLabel, BorderLayout.CENTER);
+        
+        JPanel buttonPane = new JPanel(new GridLayout(1,4));
+            buttonPane.add(longSimButton);
+            buttonPane.add(oneSimButton);
+            buttonPane.add(xSimButton);
+            buttonPane.add(resetButton);
+        
+        JPanel bottomPane = new JPanel(new BorderLayout());
+            bottomPane.add(population, BorderLayout.NORTH);
+            bottomPane.add(buttonPane, BorderLayout.SOUTH);
+            
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
-        contents.add(population, BorderLayout.SOUTH);
+        contents.add(bottomPane, BorderLayout.SOUTH);
+        
+        
         pack();
         setVisible(true);
+    }
+    
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == longSimButton){
+            simulator.runLongSimulation();
+        }
+        else if(e.getSource() == oneSimButton){
+            simulator.simOneGeneration();
+        }
     }
 
     /**
      * Display a short information label at the top of the window.
+     * tk Is this ever called?
      */
     public void setInfoText(String text) {
         infoLabel.setText(text);

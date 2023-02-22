@@ -9,6 +9,7 @@ public class WhiteBloodCell extends Cell
 {
     // instance variables - replace the example below with your own
 
+
     /**
      * Create a new WhiteBloodVell.
      *
@@ -21,7 +22,7 @@ public class WhiteBloodCell extends Cell
         //these were 1 in saihan's code
         setSpawnProbability(0.95);
     }
-    
+
     /**
      * Create a new WhiteBloodCell without a location on the field
      *
@@ -47,10 +48,10 @@ public class WhiteBloodCell extends Cell
                 Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
                 Random rand = new Random();
                 double randomNumber = rand.nextDouble();
-                
+
                 if(randomNumber <= newMyco.getSpawnProbability()){
                     setNextState(false);
-                    getSimulator().addTemporaryCell(newMyco);   
+                    getSimulator().addTemporaryCell(newMyco);
                 }
             }
         //}

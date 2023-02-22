@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=CancerCell
+comment0.text=\r\n\ Cell\ type\ that\ starts\ of\ few\ in\ numbers\ but\ can\ spread\ very\ quickly.\r\n\ Can\ only\ be\ killed\ by\ adult\ white\ blood\ cells.\r\n
+comment1.params=simulator\ field\ location\ col
+comment1.target=CancerCell(Simulator,\ Field,\ Location,\ java.awt.Color)
+comment1.text=\r\n\ Create\ a\ new\ CancerCell.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment2.params=simulator\ field\ col
+comment2.target=CancerCell(Simulator,\ Field,\ java.awt.Color)
+comment2.text=\r\n\ Create\ a\ new\ CancerCell\ without\ a\ location\ on\ the\ field.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ How\ it\ is\ decided\ if\ the\ cancer\ cell\ lives/spreads\ or\ not\r\n
+comment4.params=
+comment4.target=void\ affectCancerCount()
+comment4.text=\r\n\ This\ method\ with\ the\ method\ affectMycoSpawnRate()\ form\ the\ parasitic\ relationship.\r\n
+numComments=5

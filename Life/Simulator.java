@@ -42,7 +42,7 @@ public class Simulator {
      */
     public static void main(String[] args) {
         Simulator sim = new Simulator();
-        sim.simulate(1);
+        sim.simulate(500);
 //        sim.simulate(30);
     }
 
@@ -96,7 +96,7 @@ public class Simulator {
     public void simulate(int numGenerations) {
         for (int gen = 1; gen <= numGenerations && view.isViable(field); gen++) {
             simOneGeneration();
-            delay(1000);   // comment out to run simulation faster
+            delay(10);   // comment out to run simulation faster
         }
     }
 

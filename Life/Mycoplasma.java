@@ -38,8 +38,8 @@ public class Mycoplasma extends Cell {
     /**
      * This is how the Mycoplasma decides if it's alive or not
      */
-    public void act() {
-        int mycoCount = getMycoCount();
+    public void act(){
+        int mycoCount = getCellCount(Mycoplasma.class);
         //int whiteCount = getWhiteCount();
         setNextState(false);
 
@@ -78,7 +78,7 @@ public class Mycoplasma extends Cell {
      * This method with the method affectCancerSpawnRate form the parasitic relationship.
      */
     public void affectMycoSpawnRate(){
-        if (cancerCount()>0){
+        if (getCellCount(CancerCell.class)>0){
             changeProbabilityForSpawningNewCell(1);
         }
     }

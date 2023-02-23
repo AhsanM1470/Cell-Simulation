@@ -39,7 +39,7 @@ public class WhiteBloodCell extends Cell
      */
     public void act()
     {
-        int mycoCount = getMycoCount();
+        int mycoCount = getCellCount(Mycoplasma.class);
         setNextState(true);
 
         //Actions based on whether this cell is diseased.

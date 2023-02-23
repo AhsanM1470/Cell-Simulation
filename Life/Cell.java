@@ -194,7 +194,11 @@ public abstract class Cell {
 
 
     /**
-     * Passing Class as parameter to clean up code?
+     * This returns the number of neighbours of a particular Cell subclass.
+     * Takes a class as a parameter (for example "Mycoplasma.class") and checks
+     *  how many neighbours of that class the cell using this method has.
+     * @param c
+     * @return number of neighbours of Class c.
      */
     protected int getCellCount(Class c){
         int cellCount = 0;
@@ -207,51 +211,6 @@ public abstract class Cell {
         }
         return cellCount;
 
-    }
-
-    /**
-     * Return the number of mycoplasma neighbours around the cell
-     * @return The number of mycoplasma neighbours
-     */
-    protected int getMycoCount(){
-        int mycoCount = 0;
-        List<Cell> neighbours = getNeighbours();
-        for(Cell neighbour : neighbours){
-            if(neighbour instanceof Mycoplasma){
-                mycoCount++;
-            }
-        }
-        return mycoCount;
-    }
-
-    /**
-     * Return the number of white blood cells neighbours around the cell
-     * @return The number of white blood cells neighbours
-     */
-    protected int getWhiteCount(){
-        int whiteCount = 0;
-        List<Cell> neighbours = getNeighbours();
-        for(Cell neighbour : neighbours){
-            if(neighbour instanceof WhiteBloodCell){
-                whiteCount++;
-            }
-        }
-        return whiteCount;
-    }
-
-    /**
-     * Returns the number of cancer cell neighbours around a given cell
-     * @return The number of cancer cell neighbours
-     */
-    protected int cancerCount(){
-        int cancerCount = 0;
-        List<Cell> neighbours = getNeighbours();
-        for(Cell neighbour : neighbours){
-            if(neighbour instanceof CancerCell){
-                cancerCount++;
-            }
-        }
-        return cancerCount;
     }
 
     /**

@@ -44,13 +44,9 @@ public class CancerCell extends Cell
      */
     public void act()
     {
-        System.out.println(getCellCount(Mycoplasma.class));
-
-
-
         affectProbabilityForPossibleCancerNeighbours();
-        int mycoCount = getMycoCount();
-        int whiteCount = getWhiteCount();
+//        int mycoCount = getMycoCount();
+//        int whiteCount = getWhiteCount();
         List<Cell> neighbours = getNeighbours();
         setNextState(true);
 
@@ -86,7 +82,7 @@ public class CancerCell extends Cell
 
         //Modulo 9 means the generation before every tenth is checked to see if there
         // is a nearby Mycoplasma
-        if(getMycoCount() > 0 && getAge()%10 == 9) {
+        if(getCellCount(Mycoplasma.class) > 0 && getAge()%10 == 9) {
             for (Cell neighbour : neighbours) {
                 if (neighbour instanceof EmptyCell) {
                     ((EmptyCell) neighbour).getTheArrayListOfCancerCells().clear();

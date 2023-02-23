@@ -43,8 +43,10 @@ public class EmptyCell extends Cell {
      * How it is decided if the empty cell continues to exist or be replaced by a specialised cell
      */
     public void act() {
-        int mycoCount = getMycoCount();
-        int whiteCount = getWhiteCount();
+        int mycoCount = getCellCount(Mycoplasma.class);
+//        System.out.println(getCellCount(WhiteBloodCell.class));
+        int whiteCount = getCellCount(WhiteBloodCell.class);
+//        int whiteCount = getWhiteCount();
         setNextState(true);
 
 
@@ -83,7 +85,7 @@ public class EmptyCell extends Cell {
 //            }
 
         //Cancer cells spawn every ten generations
-        if (cancerCount() > 0 && checkIfReplicableCancerCellIsNearby()) {
+        if (getCellCount(CancerCell.class) > 0 && checkIfReplicableCancerCellIsNearby()) {
             Random rand = new Random();
             double randomNumber = rand.nextDouble();
             CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);

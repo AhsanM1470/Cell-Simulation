@@ -32,7 +32,7 @@ public class Mycoplasma extends Cell {
     public Mycoplasma(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        changeProbabilityForSpawningNewCell(0.96);
+        changeProbabilityForSpawningNewCell(0.98);
     }
 
     /**

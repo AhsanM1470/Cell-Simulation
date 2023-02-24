@@ -24,7 +24,7 @@ public class Simulator {
 
     //Newly generated cells that will be added to the cells ArrayList
     private List<Cell> temporaryCells;
-    
+
     //The locations on the field for the temporary cells
     private List<Location> temporaryLocations;
 
@@ -41,8 +41,8 @@ public class Simulator {
      * Execute simulation
      */
     public static void main(String[] args) {
-      Simulator sim = new Simulator();
-      //sim.simulate(100);
+        Simulator sim = new Simulator();
+        //sim.simulate(100);
     }
 
     /**
@@ -116,7 +116,7 @@ public class Simulator {
                 cell.setColor(Color.WHITE);
             }
         }
-        
+
         //Remove all dead cells and replace them with the newly generated cells in temporaryCells
         Iterator<Cell> it = cells.iterator();
         while(it.hasNext()){
@@ -126,14 +126,14 @@ public class Simulator {
                 it.remove();
             }
         }
-        
+
         //Place the temporary cells on the field
         for(Cell temporaryCell : temporaryCells){
             temporaryCell.setLocation(temporaryLocations.get(0));
             temporaryLocations.remove(0);
             cells.add(temporaryCell);
         }
-        
+
         view.showStatus(generation, field);
         temporaryCells.clear();
     }
@@ -149,14 +149,14 @@ public class Simulator {
 
         // Show the starting state in the view.
         view.showStatus(generation, field);
-    }   
+    }
 
     /**
      * Randomly populate the field live/dead life forms
      */
     private void populate() {
         Random rand = Randomizer.getRandom();
-      
+
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 Location location = new Location(row, col);
@@ -167,7 +167,7 @@ public class Simulator {
                 }else if(randomNumber > 0.2 && randomNumber <= 0.22){
                     WhiteBloodCell white = new WhiteBloodCell(this, field, location, Color.PINK);
                     cells.add(white);
-                //tk cancer cell populate here
+                    //tk cancer cell populate here
                 } else{
                     EmptyCell empty = new EmptyCell(this, field, location, Color.GRAY);
                     cells.add(empty);
@@ -175,7 +175,7 @@ public class Simulator {
             }
         }
     }
-    
+
     /**
      * Add a cell to the temporaryCells ArrayList
      */
@@ -195,7 +195,7 @@ public class Simulator {
             // wake up
         }
     }
-    
+
     public int getGeneration(){
         return generation;
     }

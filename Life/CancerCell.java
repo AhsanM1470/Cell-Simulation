@@ -22,7 +22,7 @@ public class CancerCell extends Cell
         //this was 0 in Saihan's code
         setSpawnProbability(0.3);
     }
-    
+
     /**
      * Create a new CancerCell without a location on the field.
      *
@@ -34,7 +34,7 @@ public class CancerCell extends Cell
         super(simulator, field, col);
         setSpawnProbability(0.3);
     }
-    
+
     /**
      * How it is decided if the cancer cell lives/spreads or not
      */
@@ -43,13 +43,13 @@ public class CancerCell extends Cell
         int mycoCount = getMycoCount();
         int whiteCount = getWhiteCount();
         setNextState(true);
-        
+
         if(mycoCount > 0){
             setSpawnProbability(0.25);
         }
-        
+
         //if(isAlive()){
-            
+
         //}
     }
 

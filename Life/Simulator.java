@@ -42,7 +42,8 @@ public class Simulator {
      */
     public static void main(String[] args) {
         Simulator sim = new Simulator();
-        //sim.simulate(100);
+        sim.simulate(500);
+//        sim.simulate(30);
     }
 
     /**
@@ -71,7 +72,8 @@ public class Simulator {
         temporaryLocations = new ArrayList<>();
 
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width, this);
+        view = new SimulatorView(depth, width, this
+        );
 
         // Setup a valid starting point.
         reset();
@@ -112,7 +114,7 @@ public class Simulator {
         for (Cell cell : cells) {
             cell.updateState();
             cell.incrementAge();
-            if(cell instanceof WhiteBloodCell && cell.getAge() > 6){
+            if(cell instanceof WhiteBloodCell && cell.getAge() > 6 && !((WhiteBloodCell) cell).isDiseased()){
                 cell.setColor(Color.WHITE);
             }
         }
@@ -160,18 +162,27 @@ public class Simulator {
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 Location location = new Location(row, col);
-                double randomNumber = rand.nextDouble();
-                if (randomNumber <= 0.2) {
+                double randResult = rand.nextDouble();
+                if (randResult <= 0.2) {
                     Mycoplasma myco = new Mycoplasma(this, field, location, Color.ORANGE);
                     cells.add(myco);
-                }else if(randomNumber > 0.2 && randomNumber <= 0.22){
+                }
+
+                else if(randResult > 0.2 && randResult <= 0.22){
                     WhiteBloodCell white = new WhiteBloodCell(this, field, location, Color.PINK);
                     cells.add(white);
-                    //tk cancer cell populate here
-                } else{
+                }
+
+                else if (randResult > 0.22 && randResult <= 0.221){
+                    CancerCell cancer = new CancerCell(this, field, location, Color.RED);
+                    cells.add(cancer);
+                }
+
+                else{
                     EmptyCell empty = new EmptyCell(this, field, location, Color.GRAY);
                     cells.add(empty);
                 }
+
             }
         }
     }
@@ -194,9 +205,5 @@ public class Simulator {
         catch (InterruptedException ie) {
             // wake up
         }
-    }
-
-    public int getGeneration(){
-        return generation;
     }
 }

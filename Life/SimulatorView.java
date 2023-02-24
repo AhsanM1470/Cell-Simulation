@@ -13,9 +13,12 @@ import java.util.Map;
  * @version 2022.01.06 (1)
  */
 
-public class SimulatorView extends JFrame {
+public class SimulatorView extends JFrame implements ActionListener, FocusListener {
+    //tk
+    private Simulator simulator;
+    
     // Colors used for empty locations.
-    private static final Color EMPTY_COLOR = Color.gray;
+    private static final Color EMPTY_COLOR = Color.blue;
 
     // Color used for objects that have no defined color.
     private static final Color UNKNOWN_COLOR = Color.black;
@@ -28,6 +31,11 @@ public class SimulatorView extends JFrame {
 
     // GUI labels
     private JLabel genLabel, population, infoLabel;
+    
+    //tk
+    private JButton oneGenerationButton, resetButton;
+    
+    private JTextField jumpTextField;
 
     // Extends the multi-line plain text view to be suitable for a single-line
     // editor view. (part of Swing)
@@ -41,32 +49,100 @@ public class SimulatorView extends JFrame {
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width) {
+    public SimulatorView(int height, int width, Simulator simulator) {
         stats = new FieldStats();
+        this.simulator = simulator;
 
         setTitle("Life Simulation");
         genLabel = new JLabel(GENERATION_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
-
+        
+        jumpTextField = new JTextField();
+        jumpTextField.addActionListener(this);
+        jumpTextField.addFocusListener(this);
+        jumpTextField.setForeground(Color.GRAY);
+        
+        oneGenerationButton = new JButton();
+        oneGenerationButton.addActionListener(this);
+        oneGenerationButton.setText("Simulate One Generation");
+        
+        resetButton = new JButton();
+        resetButton.addActionListener(this);
+        resetButton.setText("Reset Field");
+        //
+        
         setLocation(100, 50);
 
         fieldView = new FieldView(height, width);
 
         Container contents = getContentPane();
-
+        
         JPanel infoPane = new JPanel(new BorderLayout());
             infoPane.add(genLabel, BorderLayout.WEST);
-            infoPane.add(infoLabel, BorderLayout.CENTER);
+            //tk does infoPane serve any purpose
+            //infoPane.add(infoLabel, BorderLayout.CENTER);
+        
+        JPanel interactivePane = new JPanel(new GridLayout(1,3));
+            interactivePane.add(jumpTextField);
+            interactivePane.add(oneGenerationButton);
+            interactivePane.add(resetButton);
+        
+        JPanel bottomPane = new JPanel(new BorderLayout());
+            bottomPane.add(population, BorderLayout.NORTH);
+            bottomPane.add(interactivePane, BorderLayout.SOUTH);
+            
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
-        contents.add(population, BorderLayout.SOUTH);
+        contents.add(bottomPane, BorderLayout.SOUTH);
+        
         pack();
         setVisible(true);
+    }
+    
+    public void focusGained(FocusEvent e){
+        jumpTextField.setText("");
+        jumpTextField.setForeground(Color.BLACK);
+    }
+            
+    @Override
+    public void focusLost(FocusEvent e){
+        if(jumpTextField.getText().isEmpty()){
+            jumpTextField.setForeground(Color.GRAY);
+            jumpTextField.setText("Jump to generation");
+        }
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == jumpTextField){
+            String jumpInput = jumpTextField.getText();
+            try{
+                Integer.parseInt(jumpInput);
+            }
+            catch(NumberFormatException nfe){
+                return;
+            }
+            int jumpValue = Integer.parseInt(jumpInput);
+            int currentGen = simulator.getGeneration();
+            if(jumpValue > currentGen){
+                simulator.simulate(jumpValue - currentGen);
+            }else{
+                simulator.reset();
+                simulator.simulate(jumpValue);
+            }
+        }
+        else if(e.getSource() == oneGenerationButton){
+            simulator.simOneGeneration();
+        }
+        else if(e.getSource() == resetButton){
+            simulator.reset();
+        }
     }
 
     /**
      * Display a short information label at the top of the window.
+     * tk Is this ever called?
      */
     public void setInfoText(String text) {
         infoLabel.setText(text);

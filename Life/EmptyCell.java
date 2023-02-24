@@ -11,6 +11,7 @@ public class EmptyCell extends Cell {
     private double randomNumber;
     //    private ArrayList<CancerCell> arrayListOfCancerCells;
     private ArrayList<Cell> arrayListOfCancerCells;
+    private ArrayList<Cell> arrayListOfMycoplasmaCells;
 
     /**
      * Create a new EmptyCell.
@@ -23,6 +24,7 @@ public class EmptyCell extends Cell {
         super(simulator, field, location, col);
 
         arrayListOfCancerCells = new ArrayList<>();
+        arrayListOfMycoplasmaCells = new ArrayList<>();
     }
 
     /**
@@ -37,6 +39,7 @@ public class EmptyCell extends Cell {
         double randomNumber = rand.nextDouble();
 
         arrayListOfCancerCells = new ArrayList<>();
+        arrayListOfMycoplasmaCells = new ArrayList<>();
     }
 
     /**
@@ -52,6 +55,12 @@ public class EmptyCell extends Cell {
 
         //If there is 3 mycoplasma around it, it will be replaced by a mycoplasma.
         if (mycoCount == 3) {
+            if (!getTheArrayListOfMycoplasmaCells().isEmpty()){
+                setNextState(false);
+                getSimulator().addTemporaryCell(getTheArrayListOfMycoplasmaCells().get(0));
+                return;
+            }
+
             Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
             Random rand = new Random();
             randomNumber = rand.nextDouble();
@@ -118,6 +127,15 @@ public class EmptyCell extends Cell {
      */
     protected ArrayList<Cell> getTheArrayListOfCancerCells(){
         return arrayListOfCancerCells;
+    }
+
+    /**
+     * This is only used by Mycoplasma and EmptyCell classes to refer to Mycoplasma cells
+     *  that have had their individual probabilities of spawning affected.
+     * @return ArrayList of Cancer cells with specific probabilities
+     */
+    protected ArrayList<Cell> getTheArrayListOfMycoplasmaCells(){
+        return arrayListOfMycoplasmaCells;
     }
 
 }

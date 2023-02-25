@@ -91,6 +91,8 @@ public class CancerCell extends Cell
 
                     //Casting here is fine because there is a check above for if neighbour is an EmptyCell
                     //Adds the cancer cells to the ArrayList, so they have specific probabilities
+                    //Each empty cell has its own arraylist which is being added to so the same one is not being
+                    // overwritten.
                     ((EmptyCell) neighbour).getTheArrayListOfSpecialCells().add(0, cancer);
 
                 }

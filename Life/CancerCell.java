@@ -85,13 +85,13 @@ public class CancerCell extends Cell
         if(getCellCount(Mycoplasma.class) > 0 && getAge()%10 == 9) {
             for (Cell neighbour : neighbours) {
                 if (neighbour instanceof EmptyCell) {
-                    ((EmptyCell) neighbour).getTheArrayListOfCancerCells().clear();
+//                    ((EmptyCell) neighbour).getTheArrayListOfCancerCells().clear();
                     CancerCell cancer = new CancerCell(neighbour.getSimulator(), neighbour.getField(), Color.RED);
                     cancer.setFlagForDeterminingWhenProbabilityShouldChange(true);
 
                     //Casting here is fine because there is a check above for if neighbour is an EmptyCell
                     //Adds the cancer cells to the ArrayList, so they have specific probabilities
-                    ((EmptyCell) neighbour).getTheArrayListOfCancerCells().add(cancer);
+                    ((EmptyCell) neighbour).getTheArrayListOfSpecialCells().add(0, cancer);
 
                 }
 

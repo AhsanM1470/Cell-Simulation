@@ -9,9 +9,12 @@ import java.util.ArrayList;
  */
 public class EmptyCell extends Cell {
     private double randomNumber;
-    //    private ArrayList<CancerCell> arrayListOfCancerCells;
-    private ArrayList<Cell> arrayListOfCancerCells;
-    private ArrayList<Cell> arrayListOfMycoplasmaCells;
+
+    //This is an arraylist of all cells with special probabilities
+    //Each index is for a particular cell type (0 for cancer, 1 for mycoplasma)
+    //Initialised values are integers 1 as placeholders so if condition to check
+    // if arraylist is empty is not required.
+    private ArrayList<Object> arrayListOfSpecialCells;
 
     /**
      * Create a new EmptyCell.
@@ -23,8 +26,9 @@ public class EmptyCell extends Cell {
     public EmptyCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
 
-        arrayListOfCancerCells = new ArrayList<>();
-        arrayListOfMycoplasmaCells = new ArrayList<>();
+        arrayListOfSpecialCells = new ArrayList<>();
+        arrayListOfSpecialCells.add(1);
+        arrayListOfSpecialCells.add(1);
     }
 
     /**
@@ -38,8 +42,10 @@ public class EmptyCell extends Cell {
         Random rand = new Random();
         double randomNumber = rand.nextDouble();
 
-        arrayListOfCancerCells = new ArrayList<>();
-        arrayListOfMycoplasmaCells = new ArrayList<>();
+        arrayListOfSpecialCells = new ArrayList<>();
+        arrayListOfSpecialCells.add(1);
+        arrayListOfSpecialCells.add(1);
+
     }
 
     /**
@@ -55,9 +61,13 @@ public class EmptyCell extends Cell {
 
         //If there is 3 mycoplasma around it, it will be replaced by a mycoplasma.
         if (mycoCount == 3) {
-            if (!getTheArrayListOfMycoplasmaCells().isEmpty()){
+//            if (!getTheArrayListOfMycoplasmaCells().isEmpty()){
+            if (getTheArrayListOfSpecialCells().get(1) instanceof Mycoplasma){
                 setNextState(false);
-                getSimulator().addTemporaryCell(getTheArrayListOfMycoplasmaCells().get(0));
+                getSimulator().addTemporaryCell((Cell) getTheArrayListOfSpecialCells().get(1));
+
+                //this replaces this special cell with an integer so the same one isn't twice added
+                getTheArrayListOfSpecialCells().add(1, 1);
                 return;
             }
 
@@ -100,9 +110,11 @@ public class EmptyCell extends Cell {
             CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);
 
             //This checks if there are any Cancer cells already made with special probabilities
-            if(!getTheArrayListOfCancerCells().isEmpty()){
+//            if(!getTheArrayListOfCancerCells().isEmpty()){
+            if(getTheArrayListOfSpecialCells().get(0) instanceof CancerCell){
                 setNextState(false);
-                getSimulator().addTemporaryCell(getTheArrayListOfCancerCells().get(0));
+                getSimulator().addTemporaryCell((Cell) getTheArrayListOfSpecialCells().get(0));
+                arrayListOfSpecialCells.add(0,1);
                 return;
             }
 
@@ -116,26 +128,13 @@ public class EmptyCell extends Cell {
 
     }
 
-//    public ArrayList<CancerCell> getTheArrayListOfCancerCells(){
-//        return arrayListOfCancerCells;
-//    }
-
-    /**
-     * This is only used by CancerCell and EmptyCell classes to refer to Cancer cells
-     *  that have had their individual probabilities of spawning affected.
-     * @return ArrayList of Cancer cells with specific probabilities
-     */
-    protected ArrayList<Cell> getTheArrayListOfCancerCells(){
-        return arrayListOfCancerCells;
-    }
-
     /**
      * This is only used by Mycoplasma and EmptyCell classes to refer to Mycoplasma cells
      *  that have had their individual probabilities of spawning affected.
      * @return ArrayList of Cancer cells with specific probabilities
      */
-    protected ArrayList<Cell> getTheArrayListOfMycoplasmaCells(){
-        return arrayListOfMycoplasmaCells;
+    protected ArrayList<Object> getTheArrayListOfSpecialCells(){
+        return arrayListOfSpecialCells;
     }
 
 }

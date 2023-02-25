@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d3a7678-a80b-40e2-8dd8-559d6fcd8b11" name="Changes" comment="FIXED MYCOPLASMA PARASITISM">
-      <change beforePath="$PROJECT_DIR$/Life/CancerCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/Life/CancerCell.java" afterDir="false" />
+    <list default="true" id="4d3a7678-a80b-40e2-8dd8-559d6fcd8b11" name="Changes" comment="FIX RANDOMNUMBER PROBABILITY FOR CANCER">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Life/EmptyCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/Life/EmptyCell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Life/Mycoplasma.java" beforeDir="false" afterPath="$PROJECT_DIR$/Life/Mycoplasma.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Life/Simulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Life/Simulator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Cell-Automaton/CancerCell.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Cell-Automaton/CancerCell.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Cell-Automaton/EmptyCell.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Cell-Automaton/EmptyCell.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Cell-Automaton/Mycoplasma.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Cell-Automaton/Mycoplasma.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Cell-Automaton/Simulator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Cell-Automaton/Simulator.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +76,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677257260686</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="I have optimised the arraylistofspecialcells so that there is only one.&#10;&#10;Index 0 is used for cancer cells and index 1 is used for mycoplasma cells. The arraylist is initialised with values 1 (which is why object type is Object so it can take integer values as well) so the arraylist is never empty. This way we don't have to have a check for whether it is empty, reducing the number of nested if statements.&#10;&#10;This is also completely extendable. For any new kind of special cell, we simply initialise an extra value in the arraylist and use a new index in the arraylist instead of making a whole new arraylist.">
+      <created>1677324829697</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1677324829697</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -89,6 +100,18 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="FINISHED PRODUCT" />
     <MESSAGE value="FIXED MYCOPLASMA PARASITISM" />
-    <option name="LAST_COMMIT_MESSAGE" value="FIXED MYCOPLASMA PARASITISM" />
+    <MESSAGE value="I have optimised the arraylistofspecialcells so that there is only one.&#10;&#10;Index 0 is used for cancer cells and index 1 is used for mycoplasma cells. The arraylist is initialised with values 1 (which is why object type is Object so it can take integer values as well) so the arraylist is never empty. This way we don't have to have a check for whether it is empty, reducing the number of nested if statements.&#10;&#10;This is also completely extendable. For any new kind of special cell, we simply initialise an extra value in the arraylist and use a new index in the arraylist instead of making a whole new arraylist." />
+    <option name="LAST_COMMIT_MESSAGE" value="I have optimised the arraylistofspecialcells so that there is only one.&#10;&#10;Index 0 is used for cancer cells and index 1 is used for mycoplasma cells. The arraylist is initialised with values 1 (which is why object type is Object so it can take integer values as well) so the arraylist is never empty. This way we don't have to have a check for whether it is empty, reducing the number of nested if statements.&#10;&#10;This is also completely extendable. For any new kind of special cell, we simply initialise an extra value in the arraylist and use a new index in the arraylist instead of making a whole new arraylist." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Life/Simulator.java</url>
+          <line>108</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

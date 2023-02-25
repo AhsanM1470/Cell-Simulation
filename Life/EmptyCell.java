@@ -112,8 +112,14 @@ public class EmptyCell extends Cell {
             //This checks if there are any Cancer cells already made with special probabilities
 //            if(!getTheArrayListOfCancerCells().isEmpty()){
             if(getTheArrayListOfSpecialCells().get(0) instanceof CancerCell){
-                setNextState(false);
-                getSimulator().addTemporaryCell((Cell) getTheArrayListOfSpecialCells().get(0));
+                Cell specialCancerCell = (Cell) arrayListOfSpecialCells.get(0);
+
+                //this uses the new special probability value.
+                //not necessary for special Mycoplasma because their special value is 1.
+                if(randomNumber <= specialCancerCell.getProbabilityForSpawningNewCell()) {
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(specialCancerCell);
+                }
                 arrayListOfSpecialCells.add(0,1);
                 return;
             }

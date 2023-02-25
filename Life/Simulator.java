@@ -96,7 +96,7 @@ public class Simulator {
     public void simulate(int numGenerations) {
         for (int gen = 1; gen <= numGenerations && view.isViable(field); gen++) {
             simOneGeneration();
-//            delay(10);   // comment out to run simulation faster
+//            delay(100);   // comment out to run simulation faster
         }
     }
 

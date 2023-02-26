@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=WhiteBloodCell
+comment0.text=\r\n\ Attacks\ mycoplasma\ and\ cancer\ cells\r\n
+comment1.params=simulator\ field\ location\ col
+comment1.target=WhiteBloodCell(Simulator,\ Field,\ Location,\ java.awt.Color)
+comment1.text=\r\n\ Create\ a\ new\ WhiteBloodVell.\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment2.params=simulator\ field\ col
+comment2.target=WhiteBloodCell(Simulator,\ Field,\ java.awt.Color)
+comment2.text=\r\n\ Create\ a\ new\ WhiteBloodCell\ without\ a\ location\ on\ the\ field\r\n\r\n\ @param\ simulator\ The\ simulator\ used\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ How\ it\ is\ decided\ if\ white\ blood\ cells\ live/spread\ or\ not\r\n
+comment4.params=
+comment4.target=void\ setMayBeDiseased()
+comment4.text=\r\n\ Makes\ a\ White\ Blood\ Cell\ have\ a\ 1%\ chance\ to\ become\ disease\r\n\ Diseased\ White\ Blood\ Cells\ attack\ any\ cell,\ even\ other\ White\ Blood\ Cells.\r\n
+comment5.params=
+comment5.target=boolean\ isDiseased()
+comment5.text=\r\n\ @return\ Whether\ this\ White\ Blood\ Cell\ is\ diseased.\r\n
+comment6.params=
+comment6.target=int\ getDiseasedCount()
+comment6.text=\r\n\ Return\ the\ number\ of\ mycoplasma\ neighbours\ around\ the\ cell\r\n\ @return\ The\ number\ of\ mycoplasma\ neighbours\r\n
+numComments=7

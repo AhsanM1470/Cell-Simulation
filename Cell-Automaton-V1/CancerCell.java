@@ -31,11 +31,9 @@ public class CancerCell extends Cell
     public CancerCell(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        setSpawnRate(0.2);
 
-        if(changeProbabilityFlag){
-            setSpawnRate(0);
-        }
+        //This value is changed in the method that affects probability below
+        setSpawnRate(0.3);
     }
 
     /**
@@ -46,10 +44,6 @@ public class CancerCell extends Cell
         affectProbabilityForPossibleCancerNeighbours();
         List<Cell> neighbours = getNeighbours();
         setNextState(true);
-
-        //This ensures that the same flagged Cancer cell does not spawn
-        // multiple cells without the Myco parasitic condition
-        setChangeProbabilityFlag(false);
 
         //Causes disease in White Blood Cells
         causeDisease();
@@ -72,14 +66,14 @@ public class CancerCell extends Cell
         //Modulo 9 means the generation before every tenth is checked to see if there is a nearby Mycoplasma
         if(getCellCount(Mycoplasma.class) > 0 && getAge()%10 == 9) {
             for (Cell neighbour : neighbours) {
+
                 if (neighbour instanceof EmptyCell) {
-                    ((EmptyCell) neighbour).getFlaggedCancerCells().clear();
                     CancerCell cancer = new CancerCell(neighbour.getSimulator(), neighbour.getField(), Color.RED);
-                    cancer.setChangeProbabilityFlag(true);
+                    cancer.setSpawnRate(0);
 
                     //Casting here is fine because there is a check above for if neighbour is an EmptyCell
                     //Adds the cancer cells to the ArrayList, so they have specific probabilities
-                    ((EmptyCell) neighbour).getFlaggedCancerCells().add(cancer);
+                    ((EmptyCell) neighbour).getFlaggedSpecialCells().add(0, cancer);
 
                 }
 

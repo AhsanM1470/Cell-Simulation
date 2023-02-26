@@ -9,8 +9,13 @@ import java.util.ArrayList;
  */
 public class EmptyCell extends Cell {
     private double randomNumber;
-    private ArrayList<Cell> flaggedCancerCells;
-    private ArrayList<Cell> flaggedMycoplasmaCells;
+
+    //Each EmptyCell can hold one special cell of each subcell with
+    // a different probability. This is used for the parasitic symbiosis
+    // between cancer and mycoplasma but can also be used for other properties.
+    // Index 0 is for cancer, index 1 is for mycoplasma
+    private ArrayList<Object> flaggedSpecialCells;
+
     /**
      * Create a new EmptyCell.
      *
@@ -20,8 +25,9 @@ public class EmptyCell extends Cell {
      */
     public EmptyCell(Simulator simulator, Field field, Location location, Color col) {
         super(simulator, field, location, col);
-        flaggedCancerCells = new ArrayList<>();
-        flaggedMycoplasmaCells = new ArrayList<>();
+        flaggedSpecialCells = new ArrayList<>();
+        flaggedSpecialCells.add("cancerPlaceholder");
+        flaggedSpecialCells.add("mycoplasmaPlaceholder");
     }
 
     /**
@@ -34,8 +40,9 @@ public class EmptyCell extends Cell {
         super(simulator, field, col);
         Random rand = new Random();
         double randomNumber = rand.nextDouble();
-        flaggedCancerCells = new ArrayList<>();
-        flaggedMycoplasmaCells = new ArrayList<>();
+        flaggedSpecialCells = new ArrayList<>();
+        flaggedSpecialCells.add("cancerPlaceholder");
+        flaggedSpecialCells.add("mycoplasmaPlaceholder");
     }
 
     /**
@@ -48,16 +55,20 @@ public class EmptyCell extends Cell {
 
         //If there is 3 mycoplasma around it, it will be replaced by a mycoplasma.
         if (mycoCount == 3) {
-            if (!getFlaggedMycoplasmaCells().isEmpty()){
-               setNextState(false);
-               getSimulator().addTemporaryCell(getFlaggedMycoplasmaCells().get(0));
-               return;
+
+            if ((flaggedSpecialCells.get(1) instanceof Mycoplasma)) {
+                //don't need to set up probability with random number because new
+                // probability is 1 so guaranteed to spawn
+                setNextState(false);
+                getSimulator().addTemporaryCell((Cell) flaggedSpecialCells.get(1));
+                flaggedSpecialCells.add(1, "mycoplasmaPlaceholder");
+                return;
             }
-            
+
             Mycoplasma newMyco = new Mycoplasma(getSimulator(), getField(), Color.ORANGE);
             Random rand = new Random();
             randomNumber = rand.nextDouble();
-            if (randomNumber<= newMyco.getSpawnRate()){
+            if (randomNumber <= newMyco.getSpawnRate()) {
                 setNextState(false);
                 getSimulator().addTemporaryCell(newMyco);
             }
@@ -68,7 +79,7 @@ public class EmptyCell extends Cell {
             WhiteBloodCell newWhite = new WhiteBloodCell(getSimulator(), getField(), Color.PINK);
             Random rand = new Random();
             randomNumber = rand.nextDouble();
-            if(randomNumber<= newWhite.getSpawnRate()){
+            if (randomNumber <= newWhite.getSpawnRate()) {
                 setNextState(false);
                 getSimulator().addTemporaryCell(newWhite);
             }
@@ -79,14 +90,22 @@ public class EmptyCell extends Cell {
             Random rand = new Random();
             double randomNumber = rand.nextDouble();
             CancerCell newCancer = new CancerCell(getSimulator(), getField(), Color.RED);
+
             //This checks if there are any Cancer cells already made with special probabilities
-            if(getFlaggedCancerCells().isEmpty()){
-                setNextState(false);
-                getSimulator().addTemporaryCell(getFlaggedCancerCells().get(0));
-                return;
+            if (flaggedSpecialCells.get(0) instanceof CancerCell) {
+                //This uses less method calls than without introducing this variable
+                CancerCell flaggedCancerCell = (CancerCell) flaggedSpecialCells.get(0);
+
+                if (randomNumber < flaggedCancerCell.getSpawnRate()) {
+                    setNextState(false);
+                    getSimulator().addTemporaryCell(flaggedCancerCell);
+                    return;
+                }
             }
+
+
             //This checks for normal Cancer cell probabilities
-            else if(randomNumber <= newCancer.getSpawnRate()) {
+            else if (randomNumber <= newCancer.getSpawnRate()) {
                 setNextState(false);
                 getSimulator().addTemporaryCell(newCancer);
                 return;
@@ -94,17 +113,13 @@ public class EmptyCell extends Cell {
         }
     }
 
-    /**
-     * This is only used by CancerCell and EmptyCell classes to refer to Cancer cells
-     *  that have had their individual probabilities of spawning affected.
-     * @return ArrayList of Cancer cells with specific probabilities
-     */
-    protected ArrayList<Cell> getFlaggedCancerCells(){
-        return flaggedCancerCells;
-    }
-    
-    protected ArrayList<Cell> getFlaggedMycoplasmaCells(){
-        return flaggedMycoplasmaCells;
-    }
+        /**
+         * This is only used by CancerCell and EmptyCell classes to refer to Cancer cells
+         *  that have had their individual probabilities of spawning affected.
+         * @return ArrayList of Cancer cells with specific probabilities
+         */
+        protected ArrayList<Object> getFlaggedSpecialCells() {
+            return flaggedSpecialCells;
+        }
 
 }

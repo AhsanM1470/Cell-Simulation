@@ -21,9 +21,6 @@ public abstract class Cell {
 
     // The probability that a new cell spawns on top of its normal conditions.
     protected double spawnRate;
-    
-    // Boolean flag that checks if the cell's spawn rate will be changed or not
-    protected boolean changeProbabilityFlag = false;
 
     // The cell's field.
     private Field field;
@@ -204,20 +201,6 @@ public abstract class Cell {
             }
         }
         return cellCount;
-    }
-
-    /**
-     * @return The boolean value of the flag that determines if probability of spawning should change
-     */
-    protected boolean getChangeProbabilityFlag(){
-        return changeProbabilityFlag;
-    }
-
-    /**
-     * Changes the value of the flag for a given cell
-     */
-    protected void setChangeProbabilityFlag(boolean flagValue){
-        changeProbabilityFlag = flagValue;
     }
 
     /**

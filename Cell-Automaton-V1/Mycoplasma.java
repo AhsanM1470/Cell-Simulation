@@ -32,7 +32,7 @@ public class Mycoplasma extends Cell {
     public Mycoplasma(Simulator simulator, Field field, Color col)
     {
         super(simulator, field, col);
-        setSpawnRate(0.99);
+        setSpawnRate(0.98);
     }
 
     /**
@@ -77,13 +77,12 @@ public class Mycoplasma extends Cell {
         if (getCellCount(CancerCell.class)>0){
             for (Cell neighbour : getNeighbours()){
                 if (neighbour instanceof EmptyCell){
-                    ((EmptyCell) neighbour).getFlaggedMycoplasmaCells().clear();
                     Mycoplasma newMyco = new Mycoplasma(neighbour.getSimulator(), neighbour.getField(), Color.ORANGE);
-                    newMyco.setChangeProbabilityFlag(true);
+                    newMyco.setSpawnRate(1);
                     
                     //Casting here is fine because there is a check above for if neighbour is an EmptyCell
                     //Adds the cancer cells to the ArrayList, so they have specific probabilities
-                    ((EmptyCell) neighbour).getFlaggedMycoplasmaCells().add(newMyco);
+                    ((EmptyCell) neighbour).getFlaggedSpecialCells().add(1, newMyco);
                 }
             }
         }

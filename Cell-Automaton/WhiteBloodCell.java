@@ -1,118 +1,104 @@
 import java.awt.Color;
+import java.util.List;
 import java.util.Random;
 
 /**
- * Write a description of class WhiteBloodCell here.
+ * Attacks mycoplasma and cancer cells
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Muhammad Ahsan Mahfuz & Saihan Marshall
+ * @version 2023.02.28 (1)
  */
 public class WhiteBloodCell extends Cell
 {
     private boolean isDiseased = false;
-    private double randResult = 0;
 
     /**
      * Constructor for objects of class WhiteBloodCell
+     * 
+     * @param field The field currently occupied.
+     * @param location The location within the field.
      */
     public WhiteBloodCell(Field field, Location location, Color col) {
         super(field, location, col);
-        setSpawnRate(0.55);
-        Random rand = new Random();
-        double randResult = rand.nextDouble();
+        setSpawnRate(0.75);
     }
-
+    
     /**
-     *
+     * How it is decided if white blood cells live or not
      */
     public void act(){
         int mycoCount = getCellCount(Mycoplasma.class);
         int whiteCount = getCellCount(WhiteBloodCell.class);
+        int cancerCount = getCellCount(CancerCell.class);
         setNextState(true);
         
         if(isAlive()){
-            //Diseased.
-            //This changes the cell's behaviour to spread disease and
-            // kill other cells
             if(isDiseased){
-                setColor(Color.RED);
-                if(getAge() > 2){
-                    setNextState(false);
+                // Diseased white blood cells turn dark red and kill themselves
+                // if they are older than 6 generations
+                setColor(Color.decode("#b50000"));
+                if(getAge() > 6){
                     isDiseased = false;
-                    setAgeZero();
-                    setColor(Color.PINK);
+                    whiteDeath();
                     return;
                 }
-            }
-
-            //This causes diseased cells to possibly infect normal White Blood Cells.
-            else{
+            }else{
+                // Diseased white blood cells can cause other healthy white blood cells to become diseased
                 for(Cell neighbour : getNeighbours()){
                     if(neighbour instanceof WhiteBloodCell && ((WhiteBloodCell)neighbour).isDiseased()){
                         setMayBeDiseased();
                     }
                 }
             }
-
-            //Kills White Blood Cells if enough Mycoplasma are nearby. Random chance.
-            if(mycoCount >= 2 && randResult >= getSpawnRate()){
-                //tk Mycoplasma spawn rate
-                //Random rand = new Random();
-                //double randResult = rand.nextDouble();
-//                if(randResult <= ){
-                setNextState(false);
-                setAgeZero();
-                setColor(Color.PINK);
-                //}
+            
+            //getDiseasedCount() checks if there are more than 2 diseased cells near the healthy white blood cell
+            if(mycoCount > 2 || cancerCount > 1 || getDiseasedCount() > 2){
+                whiteDeath();
             }
-
-            //White Blood Cells die if they are surrounded by more White Blood Cells.
-            else if(whiteCount > 3){
-                setNextState(false);
-                setAgeZero();
-                setColor(Color.PINK);
-            }
-
-            //Diseased cells kill normal White Blood Cells. Random chance.
-            else if(getDiseasedCount() > 2 && randResult >= getSpawnRate()){
-                setNextState(false);
-                setAgeZero();
-                setColor(Color.PINK);
-            }
-        }
-
-        //Revival clause. Random chance.
-        else{
-            if(whiteCount == 2 && randResult < getSpawnRate()){
+        }else{
+            //Reviving white blood cell
+            Random rand = new Random();
+            double randResult = rand.nextDouble();
+            if(whiteCount == 2 && randResult <= getSpawnRate()){
                 setNextState(true);
-                setAgeZero();
+                resetAge();
                 setColor(Color.PINK);
             }
         }
     }
-
+    
     /**
-     * @return true if the cell is diseased or not
+     * Whenever white dies, set its nextState to false, its age back to zero, and its colour back to pink
+     */
+    public void whiteDeath(){
+        setNextState(false);
+        resetAge();
+        setColor(Color.PINK);
+    }
+    
+    /**
+     * Returns the boolean value of if the white blood cell is diseased or not
+     * @return isDiseased
      */
     public boolean isDiseased(){
         return isDiseased;
     }
-
+    
     /**
-     * When called, the cell this is acting on may become diseased.
-     *  If this happens, the cell's age resets to 0.
+     * There is a 5% chance for the disease to spread to nearby healthy white blood cells
      */
     public void setMayBeDiseased(){
         Random rand = new Random();
         double randResult = rand.nextDouble();
-        if(randResult <= 0.01){
+        if(randResult <= 0.05){
             isDiseased = true;
-            setAgeZero();
+            resetAge();
         }
     }
-
+    
     /**
-     * @return number of diseased White Blood Cell neighbours.
+     * Returns the number of diseased white blood cells nearby
+     * @return Number of nearby diseased cells
      */
     protected int getDiseasedCount(){
         int diseasedCount = 0;

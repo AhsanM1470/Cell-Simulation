@@ -1,15 +1,15 @@
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
-//import java.util.Iterator;
+import java.util.Iterator;
 import java.awt.Color;
 
 /**
  * A Life (Game of Life) simulator, first described by British mathematician
  * John Horton Conway in 1970.
  *
- * @author David J. Barnes, Michael Kölling & Jeffery Raphael
- * @version 2022.01.06 (1)
+ * @author Muhammad Ahsan Mahfuz, Saihan Marshall, David J. Barnes, Michael Kölling & Jeffery Raphael
+ * @version 2023.02.28 (1)
  */
 
 public class Simulator {
@@ -30,13 +30,16 @@ public class Simulator {
 
     // A graphical view of the simulation.
     private SimulatorView view;
+    
+    // The time between generation simulations in millisecs
+    private int timer = 500;
 
     /**
      * Execute simulation
      */
     public static void main(String[] args) {
       Simulator sim = new Simulator();
-      sim.simulate(200);
+      sim.simulate(100);
     }
 
     /**
@@ -70,11 +73,11 @@ public class Simulator {
     }
 
     /**
-     * Run the simulation from its current state for a reasonably long period,
-     * (4000 generations).
+     * Run the simulation from its current state for a long period of time
+     * (2000 generations)
      */
     public void runLongSimulation() {
-        simulate(4000);
+        simulate(2000);
     }
 
     /**
@@ -86,7 +89,7 @@ public class Simulator {
     public void simulate(int numGenerations) {
         for (int gen = 1; gen <= numGenerations && view.isViable(field); gen++) {
             simOneGeneration();
-            delay(10);   // comment out to run simulation faster
+            delay(timer);   // comment out to run simulation faster
         }
     }
 
@@ -96,7 +99,7 @@ public class Simulator {
      */
     public void simOneGeneration() {
         generation++;
-        for (Cell cell : cells) {
+        for(Cell cell : cells){
             cell.act();
         }
 
@@ -124,7 +127,6 @@ public class Simulator {
 
     /**
      * Randomly populate the field live/dead life forms
-     * After the first randResult (if condition), randResult is then always greater than 0.2
      */
     private void populate() {
         Random rand = Randomizer.getRandom();
@@ -133,23 +135,22 @@ public class Simulator {
             for (int col = 0; col < field.getWidth(); col++) {
                 Location location = new Location(row, col);
                 double randResult = rand.nextDouble();
-                //tk switch
+
                 if (randResult <= 0.2) {
-                    //tk just put alive or dead in the constructor?
                     Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
                     cells.add(myco);
-                }else if (randResult <= 0.6){
+                }else if (randResult <= 0.65){
                     Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
                     myco.setDead();
                     cells.add(myco);
-                }else if(randResult <= 0.65){
+                }else if(randResult <= 0.75){
                     WhiteBloodCell white = new WhiteBloodCell(field, location, Color.PINK);
                     cells.add(white);
-                }else if(randResult <= 0.9){
+                }else if(randResult <= 0.85){
                     WhiteBloodCell white = new WhiteBloodCell(field, location, Color.PINK);
                     white.setDead();
                     cells.add(white);
-                }else if(randResult <= 0.92){
+                }else if(randResult <= 0.95){
                     CancerCell cancer = new CancerCell(field, location, Color.RED);
                     cells.add(cancer);
                 }else{
@@ -166,15 +167,19 @@ public class Simulator {
      * @param millisec  The time to pause for, in milliseconds
      */
     public void delay(int millisec) {
+        timer = millisec;
         try {
-            Thread.sleep(millisec);
+            Thread.sleep(timer);
         }
         catch (InterruptedException ie) {
             // wake up
         }
     }
-
     
+    /**
+     * Return the current generation of the simulation
+     * @return The current generation
+     */
     public int getGeneration(){
         return generation;
     }

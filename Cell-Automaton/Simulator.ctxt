@@ -1,11 +1,12 @@
 #BlueJ class context
 comment0.target=Simulator
-comment0.text=\r\n\ A\ Life\ (Game\ of\ Life)\ simulator,\ first\ described\ by\ British\ mathematician\r\n\ John\ Horton\ Conway\ in\ 1970.\r\n\r\n\ @author\ David\ J.\ Barnes,\ Michael\ K\u00F6lling\ &\ Jeffery\ Raphael\r\n\ @version\ 2022.01.06\ (1)\r\n
+comment0.text=\r\n\ A\ Life\ (Game\ of\ Life)\ simulator,\ first\ described\ by\ British\ mathematician\r\n\ John\ Horton\ Conway\ in\ 1970.\r\n\r\n\ @author\ Muhammad\ Ahsan\ Mahfuz,\ Saihan\ Marshall,\ David\ J.\ Barnes,\ Michael\ K\u00F6lling\ &\ Jeffery\ Raphael\r\n\ @version\ 2023.02.28\ (1)\r\n
 comment1.params=args
 comment1.target=void\ main(java.lang.String[])
 comment1.text=\r\n\ Execute\ simulation\r\n
 comment10.params=
 comment10.target=int\ getGeneration()
+comment10.text=\r\n\ Return\ the\ current\ generation\ of\ the\ simulation\r\n\ @return\ The\ current\ generation\r\n
 comment2.params=
 comment2.target=Simulator()
 comment2.text=\r\n\ Construct\ a\ simulation\ field\ with\ default\ size.\r\n
@@ -14,7 +15,7 @@ comment3.target=Simulator(int,\ int)
 comment3.text=\r\n\ Create\ a\ simulation\ field\ with\ the\ given\ size.\r\n\ @param\ depth\ Depth\ of\ the\ field.\ Must\ be\ greater\ than\ zero.\r\n\ @param\ width\ Width\ of\ the\ field.\ Must\ be\ greater\ than\ zero.\r\n
 comment4.params=
 comment4.target=void\ runLongSimulation()
-comment4.text=\r\n\ Run\ the\ simulation\ from\ its\ current\ state\ for\ a\ reasonably\ long\ period,\r\n\ (4000\ generations).\r\n
+comment4.text=\r\n\ Run\ the\ simulation\ from\ its\ current\ state\ for\ a\ long\ period\ of\ time\r\n\ (2000\ generations)\r\n
 comment5.params=numGenerations
 comment5.target=void\ simulate(int)
 comment5.text=\r\n\ Run\ the\ simulation\ from\ its\ current\ state\ for\ the\ given\ number\ of\r\n\ generations.\ \ Stop\ before\ the\ given\ number\ of\ generations\ if\ the\r\n\ simulation\ ceases\ to\ be\ viable.\r\n\ @param\ numGenerations\ The\ number\ of\ generations\ to\ run\ for.\r\n

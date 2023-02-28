@@ -4,8 +4,8 @@ import java.util.List;
 /**
  * A class representing the shared characteristics of all forms of life
  *
- * @author David J. Barnes, Michael Kölling & Jeffery Raphael
- * @version 2022.01.06 (1)
+ * @author Muhammad Ahsan Mahfuz, Saihan Marshall, David J. Barnes, Michael Kölling & Jeffery Raphael
+ * @version 2023.02.28 (1)
  */
 
 public abstract class Cell {
@@ -16,6 +16,7 @@ public abstract class Cell {
     private boolean nextAlive;
     
     // How many generations the cell has lived for
+    // Starts at 1 to not cause errors with modulo operator
     private int age = 1;
     
     // The probability that a new cell spawns after its conditions have been fulfilled
@@ -89,6 +90,7 @@ public abstract class Cell {
 
     /**
      * Returns the cell's color
+     * @return The cell's colour
      */
     public Color getColor() {
       return color;
@@ -119,42 +121,59 @@ public abstract class Cell {
         return field;
     }
     
+    /**
+     * Return the cell's age.
+     * @return The cell's age.
+     */
     protected int getAge(){
         return age;
     }
     
-    protected void setAgeZero(){
-        age = 0;
+    /**
+     * Reset the cell's age to 1
+     */
+    protected void resetAge(){
+        age = 1;
     }
     
+    /**
+     * Increments the cell's age by 1
+     */
     protected void incrementAge(){
         age++;
     }
 
+    /**
+     * Return the cell's spawn rate
+     * @return The cell's spawn rate
+     */
     protected double getSpawnRate(){
         return spawnRate;
     }
     
+    /**
+     * Set the cell's spawn rate
+     * @param newRate The new spawn rate
+     */
     protected void setSpawnRate(double newRate){
         spawnRate = newRate;
     }
-
+    
     /**
-     * This returns a list of all the neighbouring cells
-     * that can be iterated through.
-     * @return A list of all the neighbouring cells.
+     * Return all the cell's living neighbours
+     * @return A list of the cell's living neighbours
      */
     protected List<Cell> getNeighbours(){
-        return getField().getLivingNeighbours(getLocation());
+        List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
+        return neighbours;
     }
     
     /**
      * This returns the number of neighbours of a particular Cell subclass.
-     * Takes a class as a parameter (for example "Mycoplasma.class") and
-     *  checks how many neighbours
+     * Takes a class as a parameter (for example "Mycoplasma.class") and checks how many neighbours
      * of that class the cell using this method has.
-     * @param c is a Cell subclass (like "Mycoplasma.class") which allows you
-     *  to check number of neighbours of a given Cell type.
+     * 
+     * @param c
      * @return Number of neighbours of Class c.
     */
     protected int getCellCount(Class c){
@@ -174,7 +193,7 @@ public abstract class Cell {
      * Check if the white blood cell is "mature" (returns 1) or "elder" (returns 2).
      * Mature white blood cells can attack Mycoplasma cells.
      * Elder white blood cells can attack Mycoplasma and Cancer cells.
-     * Age starts at 1 to prevent issues with the modulo operator when looking for a zero value
+     * 
      * @return 1 if the white blood cell is >= 6 generations old
      * @return 2 if the white blood cell is >= 11 generations old
     */
@@ -192,17 +211,17 @@ public abstract class Cell {
         }
         return 0;
     }
-
-
+    
     /**
-     * This determines if a cancer cell neighbour can replicate.
-     * It only returns true if the current geneation is a multiple of ten.
-     * @return true if there is a neighbouring cancer cell on a
-     * generation that is a multiple of ten
+     * Checks if a replicable cancer cell is nearby
+     * Cancer cells can replicate once evert 5 generations.
+     * 
+     * @return true if there is a cancer cell neighbour with an age divisible by 5
+     * @return false otherwise
      */
     protected boolean replicableCancerNearby(){
         for(Cell neighbour : getNeighbours()){
-            if(neighbour instanceof CancerCell && neighbour.getAge()%10 == 0){
+            if(neighbour instanceof CancerCell && neighbour.getAge()%5 == 0){
                 return true;
             }
         }

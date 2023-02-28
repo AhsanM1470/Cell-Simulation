@@ -3,17 +3,19 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 /**
  * A graphical view of the simulation grid. The view displays a rectangle for
- * each location. Colors for each type of life form can be defined using the
- * setColor method.
+ * each location.
+ * Interactive panel at the bottom.
  *
- * @author David J. Barnes, Michael Kölling & Jeffery Raphael
- * @version 2022.01.06 (1)
+ * @author Muhammad Ahsan Mahfuz, Saihan Marshall, David J. Barnes, Michael Kölling & Jeffery Raphael
+ * @version 2023.02.28 (1)
  */
 
-public class SimulatorView extends JFrame implements ActionListener, FocusListener {
+public class SimulatorView extends JFrame implements ActionListener, FocusListener, ChangeListener {
     // Simulator attached to the simulator view
     private Simulator simulator;
     
@@ -30,16 +32,16 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
     private final String POPULATION_PREFIX = "Population: ";
 
     // GUI labels
-    private JLabel genLabel, population, infoLabel;
+    private JLabel genLabel, population;
     
     // GUI buttons
     private JButton oneGenerationButton, resetButton;
-
-    //GUI slider
-    private JSlider delaySlider;
     
     // GUI text field
     private JTextField jumpTextField;
+    
+    // GUI slider
+    private JSlider delaySlider;
 
     // Extends the multi-line plain text view to be suitable for a single-line
     // editor view. (part of Swing)
@@ -52,6 +54,7 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
      * Create a view of the given width and height.
      * @param height The simulation's height.
      * @param width  The simulation's width.
+     * @param simulator  The simulation itself
      */
     public SimulatorView(int height, int width, Simulator simulator) {
         stats = new FieldStats();
@@ -59,7 +62,6 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
 
         setTitle("Life Simulation");
         genLabel = new JLabel(GENERATION_PREFIX, JLabel.CENTER);
-        infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
         // Text field to jump to a specific generation
@@ -77,20 +79,28 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
         resetButton = new JButton();
         resetButton.addActionListener(this);
         resetButton.setText("Reset Field");
+        
+        // Slider to change the delay speed
+        delaySlider = new JSlider();
+        delaySlider.addChangeListener(this);
+        delaySlider.setMajorTickSpacing(10);
+        delaySlider.setMinorTickSpacing(1);
+        delaySlider.setPaintLabels(true);
 
         setLocation(100, 50);
-
         fieldView = new FieldView(height, width);
-
         Container contents = getContentPane();
         
+        //Panel at the top
         JPanel infoPane = new JPanel(new BorderLayout());
             infoPane.add(genLabel, BorderLayout.WEST);
         
-        JPanel interactivePane = new JPanel(new GridLayout(1,3));
+        //Interactive panel at the bottom
+        JPanel interactivePane = new JPanel(new GridLayout(1,4));
             interactivePane.add(jumpTextField);
             interactivePane.add(oneGenerationButton);
             interactivePane.add(resetButton);
+            interactivePane.add(delaySlider);
         
         // Underneath the field. A count of the population of all the cells, and then underneath it the interactive panel to jump generations
         JPanel bottomPane = new JPanel(new BorderLayout());
@@ -108,6 +118,7 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
     @Override
     /**
      * When the text field is not focused, there is grey placeholder text informing the user what it is for
+     * @param e The event where the text field is not selected or focused on
      */
     public void focusLost(FocusEvent e){
         if(jumpTextField.getText().isEmpty()){
@@ -119,6 +130,7 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
     @Override
     /**
      * When the text field is focused, remove the placeholder text and change the user inputted text to black
+     * @param e The event where the text field is selected and focused on
      */
     public void focusGained(FocusEvent e){
         jumpTextField.setText("");
@@ -128,6 +140,7 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
     @Override
     /**
      * Actions performed when text in the text field is entered or when the buttons are pressed
+     * @param e The event where the user selects the text field or button
      */
     public void actionPerformed(ActionEvent e){
         // The text field checks if an integer has been entered or not
@@ -155,6 +168,18 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
         }
         else if(e.getSource() == resetButton){
             simulator.reset();
+        }
+    }
+    
+    @Override
+    /**
+     * After adjusting the slider, change the delay speed.
+     * @param e The event to be processed
+     */
+    public void stateChanged(ChangeEvent e){
+        JSlider source = (JSlider) e.getSource();
+        if(!source.getValueIsAdjusting()){
+            simulator.delay((int)source.getValue() * 10);
         }
     }
 

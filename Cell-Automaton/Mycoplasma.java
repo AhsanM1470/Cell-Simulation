@@ -1,14 +1,13 @@
 import java.awt.Color;
+import java.util.List;
 import java.util.Random;
 
 /**
- * Simplest form of life.
- * Fun Fact: Mycoplasma are one of the simplest forms of life.  A type of
- * bacteria, they only have 500-1000 genes! For comparison, fruit flies have
- * about 14,000 genes.
+ * Attacks white blood cells and cancer cells
+ * Symbiotic relatioship with cancer cells.
  *
- * @author David J. Barnes, Michael Kölling & Jeffery Raphael
- * @version 2022.01.06 (1)
+ * @author Muhammad Ahsan Mahfuz, Saihan Marshall, David J. Barnes, Michael Kölling & Jeffery Raphael
+ * @version 2023.02.28 (1)
  */
 
 public class Mycoplasma extends Cell {
@@ -25,33 +24,28 @@ public class Mycoplasma extends Cell {
     }
 
     /**
-     * This is how the Mycoplasma decides if it's alive or not
+     * How it is decided if mycoplasma live or not
      */
     public void act() {
         int mycoCount = getCellCount(Mycoplasma.class);
         int cancerCount = getCellCount(CancerCell.class);
         setNextState(false);
         alterMycoSpawnRate();
-
+        
         if (isAlive()){
-            //Base task requirement for death.
             if (mycoCount == 2 || mycoCount == 3){
                 setNextState(true);
                 return;
             }
-
-            //This gives a chance dying next generation if
-            // any mature or elder White Blood Cells are nearby.
+            // If a mature white blood cell is nearby, there is a 40% chance it will die
             if(getNearbyWhiteMaturity() > 0){
                 Random rand = new Random();
                 double randResult = rand.nextDouble();
-
-                //This gives a 40% chance that Mycoplasma will die to White Blood Cell.
-                //Death would be false in this case.
-                setNextState(!(randResult <= 0.4));
+                // Next state is the opposite of the boolean operation
+                setNextState(!(randResult <= 0.5));
             }
         }else{
-            //Base task requirement for revival.
+            // Reviving mycoplasma
             if(mycoCount == 3 || cancerCount > 1){
                 Random rand = new Random();
                 double randResult = rand.nextDouble();
@@ -61,12 +55,10 @@ public class Mycoplasma extends Cell {
             }
         }
     }
-
+    
     /**
-     * Parasitic Symbiosis.
-     * This checks for Cancer neighbours.
-     * If there is at least one Cancer neighbour then the Mycoplasma
-     *  cell spawn rate increases.
+     * If there is at least one cancer cell nearby, the mycoplasma's
+     * spawn rate increases
      */
     public void alterMycoSpawnRate(){
         for(Cell neighbour : getNeighbours()){

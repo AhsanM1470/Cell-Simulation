@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.awt.Color;
 
 /**
@@ -36,7 +36,7 @@ public class Simulator {
      */
     public static void main(String[] args) {
       Simulator sim = new Simulator();
-      sim.simulate(100);
+      sim.simulate(200);
     }
 
     /**
@@ -96,8 +96,7 @@ public class Simulator {
      */
     public void simOneGeneration() {
         generation++;
-        for (Iterator<Cell> it = cells.iterator(); it.hasNext(); ) {
-            Cell cell = it.next();
+        for (Cell cell : cells) {
             cell.act();
         }
 
@@ -125,6 +124,7 @@ public class Simulator {
 
     /**
      * Randomly populate the field live/dead life forms
+     * After the first randResult (if condition), randResult is then always greater than 0.2
      */
     private void populate() {
         Random rand = Randomizer.getRandom();
@@ -138,18 +138,18 @@ public class Simulator {
                     //tk just put alive or dead in the constructor?
                     Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
                     cells.add(myco);
-                }else if (randResult > 0.2 && randResult <= 0.6){
+                }else if (randResult <= 0.6){
                     Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
                     myco.setDead();
                     cells.add(myco);
-                }else if(randResult > 0.6 && randResult <= 0.65){
+                }else if(randResult <= 0.65){
                     WhiteBloodCell white = new WhiteBloodCell(field, location, Color.PINK);
                     cells.add(white);
-                }else if(randResult > 0.65 && randResult <= 0.9){
+                }else if(randResult <= 0.9){
                     WhiteBloodCell white = new WhiteBloodCell(field, location, Color.PINK);
                     white.setDead();
                     cells.add(white);
-                }else if(randResult > 0.9 && randResult <= 0.92){
+                }else if(randResult <= 0.92){
                     CancerCell cancer = new CancerCell(field, location, Color.RED);
                     cells.add(cancer);
                 }else{
@@ -165,7 +165,7 @@ public class Simulator {
      * Pause for a given time.
      * @param millisec  The time to pause for, in milliseconds
      */
-    private void delay(int millisec) {
+    public void delay(int millisec) {
         try {
             Thread.sleep(millisec);
         }
@@ -173,6 +173,7 @@ public class Simulator {
             // wake up
         }
     }
+
     
     public int getGeneration(){
         return generation;

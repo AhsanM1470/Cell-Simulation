@@ -138,17 +138,23 @@ public abstract class Cell {
     protected void setSpawnRate(double newRate){
         spawnRate = newRate;
     }
-    
+
+    /**
+     * This returns a list of all the neighbouring cells
+     * that can be iterated through.
+     * @return A list of all the neighbouring cells.
+     */
     protected List<Cell> getNeighbours(){
-        List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
-        return neighbours;
+        return getField().getLivingNeighbours(getLocation());
     }
     
     /**
      * This returns the number of neighbours of a particular Cell subclass.
-     * Takes a class as a parameter (for example "Mycoplasma.class") and checks how many neighbours
+     * Takes a class as a parameter (for example "Mycoplasma.class") and
+     *  checks how many neighbours
      * of that class the cell using this method has.
-     * @param c
+     * @param c is a Cell subclass (like "Mycoplasma.class") which allows you
+     *  to check number of neighbours of a given Cell type.
      * @return Number of neighbours of Class c.
     */
     protected int getCellCount(Class c){
@@ -186,7 +192,14 @@ public abstract class Cell {
         }
         return 0;
     }
-    
+
+
+    /**
+     * This determines if a cancer cell neighbour can replicate.
+     * It only returns true if the current geneation is a multiple of ten.
+     * @return true if there is a neighbouring cancer cell on a
+     * generation that is a multiple of ten
+     */
     protected boolean replicableCancerNearby(){
         for(Cell neighbour : getNeighbours()){
             if(neighbour instanceof CancerCell && neighbour.getAge()%10 == 0){

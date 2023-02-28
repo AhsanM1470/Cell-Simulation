@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -23,14 +22,20 @@ public class CancerCell extends Cell
         int mycoCount = getCellCount(Mycoplasma.class);
         setNextState(true);
         alterCancerSpawnRate();
-        
+
+        //Disease.
+        //Has a chance to cause disease in White Blood Cell neighbours.
         causeDisease();
         
         if(isAlive()){
+            //Dies if nearby to elder White Blood Cell or to Mycoplasma cell.
             if(getNearbyWhiteMaturity() == 2 || mycoCount > 1){
                 setNextState(false);
             }
-        }else{
+        }
+
+        else{
+            //Revival clause.
             for(Cell neighbour : getNeighbours()){
                 if(neighbour.replicableCancerNearby()){
                     Random rand = new Random();
@@ -43,16 +48,27 @@ public class CancerCell extends Cell
             }
         }
     }
-    
+
+    /**
+     * Parasitic Symbiosis.
+     * If Cancer cell is nearby a Mycoplasma cell, the Cancer cell will
+     *  have its spawn rate reduced.
+     */
     public void alterCancerSpawnRate(){
         for(Cell neighbour : getNeighbours()){
-            if(neighbour instanceof Mycoplasma){
+            //Added condition that mycoplasma needs to be alive to affect cancer
+            if(neighbour instanceof Mycoplasma && neighbour.isAlive()){
                 setSpawnRate(0.2);
                 return;
             }
         }
     }
-    
+
+    /**
+     * Disease.
+     * This checks for White Blood Cell neighbours and uses a method
+     *  which gives a chance of causing disease.
+     */
     public void causeDisease(){
         for(Cell neighbour : getNeighbours()){
             if(neighbour instanceof WhiteBloodCell){

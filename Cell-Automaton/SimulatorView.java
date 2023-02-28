@@ -34,6 +34,9 @@ public class SimulatorView extends JFrame implements ActionListener, FocusListen
     
     // GUI buttons
     private JButton oneGenerationButton, resetButton;
+
+    //GUI slider
+    private JSlider delaySlider;
     
     // GUI text field
     private JTextField jumpTextField;

@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -35,21 +34,24 @@ public class Mycoplasma extends Cell {
         alterMycoSpawnRate();
 
         if (isAlive()){
+            //Base task requirement for death.
             if (mycoCount == 2 || mycoCount == 3){
                 setNextState(true);
                 return;
             }
-            
+
+            //This gives a chance dying next generation if
+            // any mature or elder White Blood Cells are nearby.
             if(getNearbyWhiteMaturity() > 0){
                 Random rand = new Random();
                 double randResult = rand.nextDouble();
-                if(randResult <= 0.4){
-                    setNextState(false);
-                }else{
-                    setNextState(true);
-                }
+
+                //This gives a 40% chance that Mycoplasma will die to White Blood Cell.
+                //Death would be false in this case.
+                setNextState(!(randResult <= 0.4));
             }
         }else{
+            //Base task requirement for revival.
             if(mycoCount == 3 || cancerCount > 1){
                 Random rand = new Random();
                 double randResult = rand.nextDouble();
@@ -59,7 +61,13 @@ public class Mycoplasma extends Cell {
             }
         }
     }
-    
+
+    /**
+     * Parasitic Symbiosis.
+     * This checks for Cancer neighbours.
+     * If there is at least one Cancer neighbour then the Mycoplasma
+     *  cell spawn rate increases.
+     */
     public void alterMycoSpawnRate(){
         for(Cell neighbour : getNeighbours()){
             if(neighbour instanceof CancerCell){

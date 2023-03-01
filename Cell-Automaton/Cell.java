@@ -18,9 +18,6 @@ public abstract class Cell {
     // How many generations the cell has lived for
     // Starts at 1 to not cause errors with modulo operator
     private int age = 1;
-    
-    // The probability that a new cell spawns after its conditions have been fulfilled
-    protected double spawnRate;
 
     // The cell's field.
     private Field field;
@@ -30,7 +27,11 @@ public abstract class Cell {
 
     // The cell's color
     private Color color = Color.white;
-
+    
+    /**
+     * The probability the cell spawns (is revived) after its other conditions are fulfilled
+     */
+    protected double spawnRate;
 
     /**
      * Create a new cell at location in field.
@@ -178,7 +179,6 @@ public abstract class Cell {
     */
     protected int getCellCount(Class c){
         int cellCount = 0;
-        //Class<? extends Cell> classOfCell = cell.getClass();
         List<Cell> neighbours = getNeighbours();
         for(Cell neighbour : neighbours){
             if(neighbour.getClass().equals(c)){
@@ -199,7 +199,6 @@ public abstract class Cell {
     */
     protected int getNearbyWhiteMaturity(){
         for(Cell neighbour : getNeighbours()){
-            //what if I just did age? probably no works
             if(neighbour instanceof WhiteBloodCell && !((WhiteBloodCell)neighbour).isDiseased()){
                 if(neighbour.getAge() >= 6){
                     return 1;
